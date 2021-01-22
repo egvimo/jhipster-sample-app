@@ -1,0 +1,23 @@
+application {
+    config {
+        baseName sample
+        packageName sample
+        applicationType monolith
+        authenticationType oauth2
+        buildTool gradle
+        clientFramework angularX
+        prodDatabaseType postgresql
+        devDatabaseType postgresql
+    }
+    entities *
+}
+
+entity Abc {
+    name String unique required
+}
+
+relationship ManyToOne {
+    Abc{parent} to Abc{children}
+}
+
+filter *
