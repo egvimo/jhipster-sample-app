@@ -22,19 +22,6 @@
             </small>
           </div>
         </div>
-
-        <div class="form-group">
-          <label class="form-control-label" jhiTranslate="sampleApp.abc.parent" for="field_parent">Parent</label>
-          <select class="form-control" id="field_parent" data-cy="parent" name="parent" formControlName="parent">
-            <option [ngValue]="null"></option>
-            <option
-              [ngValue]="abcOption.id === editForm.get('parent')!.value?.id ? editForm.get('parent')!.value : abcOption"
-              *ngFor="let abcOption of abcs; trackBy: trackAbcById"
-            >
-              {{ abcOption.id }}
-            </option>
-          </select>
-        </div>
       </div>
 
       <div>

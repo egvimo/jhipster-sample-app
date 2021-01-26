@@ -18,10 +18,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 import sample.IntegrationTest;
 import sample.domain.Abc;
-import sample.domain.Abc;
 import sample.repository.AbcRepository;
-import sample.service.AbcQueryService;
-import sample.service.dto.AbcCriteria;
 
 /**
  * Integration tests for the {@link AbcResource} REST controller.
@@ -36,9 +33,6 @@ class AbcResourceIT {
 
     @Autowired
     private AbcRepository abcRepository;
-
-    @Autowired
-    private AbcQueryService abcQueryService;
 
     @Autowired
     private EntityManager em;
@@ -154,178 +148,6 @@ class AbcResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(abc.getId().intValue()))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME));
-    }
-
-    @Test
-    @Transactional
-    void getAbcsByIdFiltering() throws Exception {
-        // Initialize the database
-        abcRepository.saveAndFlush(abc);
-
-        Long id = abc.getId();
-
-        defaultAbcShouldBeFound("id.equals=" + id);
-        defaultAbcShouldNotBeFound("id.notEquals=" + id);
-
-        defaultAbcShouldBeFound("id.greaterThanOrEqual=" + id);
-        defaultAbcShouldNotBeFound("id.greaterThan=" + id);
-
-        defaultAbcShouldBeFound("id.lessThanOrEqual=" + id);
-        defaultAbcShouldNotBeFound("id.lessThan=" + id);
-    }
-
-    @Test
-    @Transactional
-    void getAllAbcsByNameIsEqualToSomething() throws Exception {
-        // Initialize the database
-        abcRepository.saveAndFlush(abc);
-
-        // Get all the abcList where name equals to DEFAULT_NAME
-        defaultAbcShouldBeFound("name.equals=" + DEFAULT_NAME);
-
-        // Get all the abcList where name equals to UPDATED_NAME
-        defaultAbcShouldNotBeFound("name.equals=" + UPDATED_NAME);
-    }
-
-    @Test
-    @Transactional
-    void getAllAbcsByNameIsNotEqualToSomething() throws Exception {
-        // Initialize the database
-        abcRepository.saveAndFlush(abc);
-
-        // Get all the abcList where name not equals to DEFAULT_NAME
-        defaultAbcShouldNotBeFound("name.notEquals=" + DEFAULT_NAME);
-
-        // Get all the abcList where name not equals to UPDATED_NAME
-        defaultAbcShouldBeFound("name.notEquals=" + UPDATED_NAME);
-    }
-
-    @Test
-    @Transactional
-    void getAllAbcsByNameIsInShouldWork() throws Exception {
-        // Initialize the database
-        abcRepository.saveAndFlush(abc);
-
-        // Get all the abcList where name in DEFAULT_NAME or UPDATED_NAME
-        defaultAbcShouldBeFound("name.in=" + DEFAULT_NAME + "," + UPDATED_NAME);
-
-        // Get all the abcList where name equals to UPDATED_NAME
-        defaultAbcShouldNotBeFound("name.in=" + UPDATED_NAME);
-    }
-
-    @Test
-    @Transactional
-    void getAllAbcsByNameIsNullOrNotNull() throws Exception {
-        // Initialize the database
-        abcRepository.saveAndFlush(abc);
-
-        // Get all the abcList where name is not null
-        defaultAbcShouldBeFound("name.specified=true");
-
-        // Get all the abcList where name is null
-        defaultAbcShouldNotBeFound("name.specified=false");
-    }
-
-    @Test
-    @Transactional
-    void getAllAbcsByNameContainsSomething() throws Exception {
-        // Initialize the database
-        abcRepository.saveAndFlush(abc);
-
-        // Get all the abcList where name contains DEFAULT_NAME
-        defaultAbcShouldBeFound("name.contains=" + DEFAULT_NAME);
-
-        // Get all the abcList where name contains UPDATED_NAME
-        defaultAbcShouldNotBeFound("name.contains=" + UPDATED_NAME);
-    }
-
-    @Test
-    @Transactional
-    void getAllAbcsByNameNotContainsSomething() throws Exception {
-        // Initialize the database
-        abcRepository.saveAndFlush(abc);
-
-        // Get all the abcList where name does not contain DEFAULT_NAME
-        defaultAbcShouldNotBeFound("name.doesNotContain=" + DEFAULT_NAME);
-
-        // Get all the abcList where name does not contain UPDATED_NAME
-        defaultAbcShouldBeFound("name.doesNotContain=" + UPDATED_NAME);
-    }
-
-    @Test
-    @Transactional
-    void getAllAbcsByParentIsEqualToSomething() throws Exception {
-        // Initialize the database
-        abcRepository.saveAndFlush(abc);
-        Abc parent = AbcResourceIT.createEntity(em);
-        em.persist(parent);
-        em.flush();
-        abc.setParent(parent);
-        abcRepository.saveAndFlush(abc);
-        Long parentId = parent.getId();
-
-        // Get all the abcList where parent equals to parentId
-        defaultAbcShouldBeFound("parentId.equals=" + parentId);
-
-        // Get all the abcList where parent equals to parentId + 1
-        defaultAbcShouldNotBeFound("parentId.equals=" + (parentId + 1));
-    }
-
-    @Test
-    @Transactional
-    void getAllAbcsByChildrenIsEqualToSomething() throws Exception {
-        // Initialize the database
-        abcRepository.saveAndFlush(abc);
-        Abc children = AbcResourceIT.createEntity(em);
-        em.persist(children);
-        em.flush();
-        abc.addChildren(children);
-        abcRepository.saveAndFlush(abc);
-        Long childrenId = children.getId();
-
-        // Get all the abcList where children equals to childrenId
-        defaultAbcShouldBeFound("childrenId.equals=" + childrenId);
-
-        // Get all the abcList where children equals to childrenId + 1
-        defaultAbcShouldNotBeFound("childrenId.equals=" + (childrenId + 1));
-    }
-
-    /**
-     * Executes the search, and checks that the default entity is returned.
-     */
-    private void defaultAbcShouldBeFound(String filter) throws Exception {
-        restAbcMockMvc
-            .perform(get("/api/abcs?sort=id,desc&" + filter))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(abc.getId().intValue())))
-            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)));
-
-        // Check, that the count call also returns 1
-        restAbcMockMvc
-            .perform(get("/api/abcs/count?sort=id,desc&" + filter))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(content().string("1"));
-    }
-
-    /**
-     * Executes the search, and checks that the default entity is not returned.
-     */
-    private void defaultAbcShouldNotBeFound(String filter) throws Exception {
-        restAbcMockMvc
-            .perform(get("/api/abcs?sort=id,desc&" + filter))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(jsonPath("$").isArray())
-            .andExpect(jsonPath("$").isEmpty());
-
-        // Check, that the count call also returns 0
-        restAbcMockMvc
-            .perform(get("/api/abcs/count?sort=id,desc&" + filter))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(content().string("0"));
     }
 
     @Test

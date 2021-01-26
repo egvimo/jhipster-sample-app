@@ -33,14 +33,14 @@
     "reactive": false,
     "clientTheme": "none",
     "clientThemeVariant": "",
-    "entities": ["Abc"],
+    "entities": ["Abc", "Xyz"],
     "skipCheckLengthOfIdentifier": false,
     "skipFakeData": false,
     "blueprints": [],
     "otherModules": [],
     "pages": [],
     "nativeLanguage": "en",
-    "creationTimestamp": 1611328042503,
-    "lastLiquibaseTimestamp": 1611328102000
+    "creationTimestamp": 1611660199149,
+    "lastLiquibaseTimestamp": 1611660319000
   }
 }

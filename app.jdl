@@ -16,8 +16,11 @@ entity Abc {
     name String unique required
 }
 
-relationship ManyToOne {
-    Abc{parent} to Abc{children}
+@skipClient
+entity Xyz {
+    name String unique required
 }
 
-filter *
+relationship OneToMany {
+    Abc{children} to Xyz{parent}
+}

@@ -61,15 +61,5 @@ describe('Component Tests', () => {
         expect(comp.isSaving).toEqual(false);
       }));
     });
-
-    describe('Tracking relationships identifiers', () => {
-      describe('trackAbcById', () => {
-        it('Should return tracked Abc primary key', () => {
-          const entity = new Abc(123);
-          const trackResult = comp.trackAbcById(0, entity);
-          expect(trackResult).toEqual(entity.id);
-        });
-      });
-    });
   });
 });

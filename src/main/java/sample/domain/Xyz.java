@@ -2,20 +2,18 @@ package sample.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
- * A Abc.
+ * A Xyz.
  */
 @Entity
-@Table(name = "abc")
+@Table(name = "xyz")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class Abc implements Serializable {
+public class Xyz implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -28,10 +26,9 @@ public class Abc implements Serializable {
     @Column(name = "name", nullable = false, unique = true)
     private String name;
 
-    @OneToMany(mappedBy = "parent")
-    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @JsonIgnoreProperties(value = { "parent" }, allowSetters = true)
-    private Set<Xyz> children = new HashSet<>();
+    @ManyToOne
+    @JsonIgnoreProperties(value = { "children" }, allowSetters = true)
+    private Abc parent;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
@@ -42,7 +39,7 @@ public class Abc implements Serializable {
         this.id = id;
     }
 
-    public Abc id(Long id) {
+    public Xyz id(Long id) {
         this.id = id;
         return this;
     }
@@ -51,7 +48,7 @@ public class Abc implements Serializable {
         return this.name;
     }
 
-    public Abc name(String name) {
+    public Xyz name(String name) {
         this.name = name;
         return this;
     }
@@ -60,35 +57,17 @@ public class Abc implements Serializable {
         this.name = name;
     }
 
-    public Set<Xyz> getChildren() {
-        return this.children;
+    public Abc getParent() {
+        return this.parent;
     }
 
-    public Abc children(Set<Xyz> xyzs) {
-        this.setChildren(xyzs);
+    public Xyz parent(Abc abc) {
+        this.setParent(abc);
         return this;
     }
 
-    public Abc addChildren(Xyz xyz) {
-        this.children.add(xyz);
-        xyz.setParent(this);
-        return this;
-    }
-
-    public Abc removeChildren(Xyz xyz) {
-        this.children.remove(xyz);
-        xyz.setParent(null);
-        return this;
-    }
-
-    public void setChildren(Set<Xyz> xyzs) {
-        if (this.children != null) {
-            this.children.forEach(i -> i.setParent(null));
-        }
-        if (xyzs != null) {
-            xyzs.forEach(i -> i.setParent(this));
-        }
-        this.children = xyzs;
+    public void setParent(Abc abc) {
+        this.parent = abc;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
@@ -98,10 +77,10 @@ public class Abc implements Serializable {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof Abc)) {
+        if (!(o instanceof Xyz)) {
             return false;
         }
-        return id != null && id.equals(((Abc) o).id);
+        return id != null && id.equals(((Xyz) o).id);
     }
 
     @Override
@@ -113,7 +92,7 @@ public class Abc implements Serializable {
     // prettier-ignore
     @Override
     public String toString() {
-        return "Abc{" +
+        return "Xyz{" +
             "id=" + getId() +
             ", name='" + getName() + "'" +
             "}";

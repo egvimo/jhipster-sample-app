@@ -1,10 +1,11 @@
+import { IXyz } from 'app/entities/xyz/xyz.model';
+
 export interface IAbc {
   id?: number;
   name?: string;
-  parent?: IAbc | null;
-  children?: IAbc[] | null;
+  children?: IXyz[] | null;
 }
 
 export class Abc implements IAbc {
-  constructor(public id?: number, public name?: string, public parent?: IAbc | null, public children?: IAbc[] | null) {}
+  constructor(public id?: number, public name?: string, public children?: IXyz[] | null) {}
 }

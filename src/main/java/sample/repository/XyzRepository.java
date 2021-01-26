@@ -2,11 +2,11 @@ package sample.repository;
 
 import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.Repository;
-import sample.domain.Abc;
+import sample.domain.Xyz;
 
 /**
- * Spring Data SQL repository for the Abc entity.
+ * Spring Data SQL repository for the Xyz entity.
  */
 @SuppressWarnings("unused")
 @Repository
-public interface AbcRepository extends JpaRepository<Abc, Long> {}
+public interface XyzRepository extends JpaRepository<Xyz, Long> {}

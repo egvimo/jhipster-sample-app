@@ -13,12 +13,10 @@ import { AbcService } from '../service/abc.service';
 })
 export class AbcUpdateComponent implements OnInit {
   isSaving = false;
-  abcs: IAbc[] = [];
 
   editForm = this.fb.group({
     id: [],
     name: [null, [Validators.required]],
-    parent: [],
   });
 
   constructor(protected abcService: AbcService, protected activatedRoute: ActivatedRoute, private fb: FormBuilder) {}
@@ -26,8 +24,6 @@ export class AbcUpdateComponent implements OnInit {
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ abc }) => {
       this.updateForm(abc);
-
-      this.abcService.query().subscribe((res: HttpResponse<IAbc[]>) => (this.abcs = res.body ?? []));
     });
   }
 
@@ -35,7 +31,6 @@ export class AbcUpdateComponent implements OnInit {
     this.editForm.patchValue({
       id: abc.id,
       name: abc.name,
-      parent: abc.parent,
     });
   }
 
@@ -58,7 +53,6 @@ export class AbcUpdateComponent implements OnInit {
       ...new Abc(),
       id: this.editForm.get(['id'])!.value,
       name: this.editForm.get(['name'])!.value,
-      parent: this.editForm.get(['parent'])!.value,
     };
   }
 
@@ -76,9 +70,5 @@ export class AbcUpdateComponent implements OnInit {
 
   protected onSaveError(): void {
     this.isSaving = false;
-  }
-
-  trackAbcById(index: number, item: IAbc): number {
-    return item.id!;
   }
 }

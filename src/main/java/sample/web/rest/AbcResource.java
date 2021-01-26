@@ -10,11 +10,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import sample.domain.Abc;
-import sample.service.AbcQueryService;
-import sample.service.AbcService;
-import sample.service.dto.AbcCriteria;
+import sample.repository.AbcRepository;
 import sample.web.rest.errors.BadRequestAlertException;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.ResponseUtil;
@@ -24,6 +23,7 @@ import tech.jhipster.web.util.ResponseUtil;
  */
 @RestController
 @RequestMapping("/api")
+@Transactional
 public class AbcResource {
 
     private final Logger log = LoggerFactory.getLogger(AbcResource.class);
@@ -33,13 +33,10 @@ public class AbcResource {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
-    private final AbcService abcService;
+    private final AbcRepository abcRepository;
 
-    private final AbcQueryService abcQueryService;
-
-    public AbcResource(AbcService abcService, AbcQueryService abcQueryService) {
-        this.abcService = abcService;
-        this.abcQueryService = abcQueryService;
+    public AbcResource(AbcRepository abcRepository) {
+        this.abcRepository = abcRepository;
     }
 
     /**
@@ -55,7 +52,7 @@ public class AbcResource {
         if (abc.getId() != null) {
             throw new BadRequestAlertException("A new abc cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        Abc result = abcService.save(abc);
+        Abc result = abcRepository.save(abc);
         return ResponseEntity
             .created(new URI("/api/abcs/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
@@ -77,7 +74,7 @@ public class AbcResource {
         if (abc.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        Abc result = abcService.save(abc);
+        Abc result = abcRepository.save(abc);
         return ResponseEntity
             .ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, abc.getId().toString()))
@@ -101,7 +98,18 @@ public class AbcResource {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
 
-        Optional<Abc> result = abcService.partialUpdate(abc);
+        Optional<Abc> result = abcRepository
+            .findById(abc.getId())
+            .map(
+                existingAbc -> {
+                    if (abc.getName() != null) {
+                        existingAbc.setName(abc.getName());
+                    }
+
+                    return existingAbc;
+                }
+            )
+            .map(abcRepository::save);
 
         return ResponseUtil.wrapOrNotFound(
             result,
@@ -112,26 +120,12 @@ public class AbcResource {
     /**
      * {@code GET  /abcs} : get all the abcs.
      *
-     * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of abcs in body.
      */
     @GetMapping("/abcs")
-    public ResponseEntity<List<Abc>> getAllAbcs(AbcCriteria criteria) {
-        log.debug("REST request to get Abcs by criteria: {}", criteria);
-        List<Abc> entityList = abcQueryService.findByCriteria(criteria);
-        return ResponseEntity.ok().body(entityList);
-    }
-
-    /**
-     * {@code GET  /abcs/count} : count all the abcs.
-     *
-     * @param criteria the criteria which the requested entities should match.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
-     */
-    @GetMapping("/abcs/count")
-    public ResponseEntity<Long> countAbcs(AbcCriteria criteria) {
-        log.debug("REST request to count Abcs by criteria: {}", criteria);
-        return ResponseEntity.ok().body(abcQueryService.countByCriteria(criteria));
+    public List<Abc> getAllAbcs() {
+        log.debug("REST request to get all Abcs");
+        return abcRepository.findAll();
     }
 
     /**
@@ -143,7 +137,7 @@ public class AbcResource {
     @GetMapping("/abcs/{id}")
     public ResponseEntity<Abc> getAbc(@PathVariable Long id) {
         log.debug("REST request to get Abc : {}", id);
-        Optional<Abc> abc = abcService.findOne(id);
+        Optional<Abc> abc = abcRepository.findById(id);
         return ResponseUtil.wrapOrNotFound(abc);
     }
 
@@ -156,7 +150,7 @@ public class AbcResource {
     @DeleteMapping("/abcs/{id}")
     public ResponseEntity<Void> deleteAbc(@PathVariable Long id) {
         log.debug("REST request to delete Abc : {}", id);
-        abcService.delete(id);
+        abcRepository.deleteById(id);
         return ResponseEntity
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))

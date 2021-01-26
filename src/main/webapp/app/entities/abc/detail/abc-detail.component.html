@@ -18,12 +18,6 @@
         <dd>
           <span>{{ abc.name }}</span>
         </dd>
-        <dt><span jhiTranslate="sampleApp.abc.parent">Parent</span></dt>
-        <dd>
-          <div *ngIf="abc.parent">
-            <a [routerLink]="['/abc', abc.parent?.id, 'view']">{{ abc.parent?.id }}</a>
-          </div>
-        </dd>
       </dl>
 
       <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">

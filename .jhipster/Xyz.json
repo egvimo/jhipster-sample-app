@@ -1,5 +1,5 @@
 {
-  "name": "Abc",
+  "name": "Xyz",
   "fields": [
     {
       "fieldName": "name",
@@ -9,13 +9,13 @@
   ],
   "relationships": [
     {
-      "relationshipType": "one-to-many",
-      "otherEntityName": "xyz",
-      "otherEntityRelationshipName": "parent",
-      "relationshipName": "children"
+      "relationshipType": "many-to-one",
+      "otherEntityName": "abc",
+      "otherEntityRelationshipName": "children",
+      "relationshipName": "parent"
     }
   ],
-  "entityTableName": "abc",
+  "entityTableName": "xyz",
   "dto": "no",
   "pagination": "no",
   "service": "no",
@@ -24,5 +24,6 @@
   "readOnly": false,
   "embedded": false,
   "applications": ["sample"],
-  "changelogDate": "20210126112419"
+  "skipClient": true,
+  "changelogDate": "20210126112519"
 }
