@@ -19,7 +19,7 @@
       },
       "id": "ID",
       "name": "Name",
-      "children": "Children"
+      "xyz": "Xyz"
     }
   }
 }

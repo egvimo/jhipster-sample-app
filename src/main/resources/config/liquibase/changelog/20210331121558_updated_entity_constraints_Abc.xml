@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+
+    <!--
+        Added the relationship constraints for entity Abc.
+    -->
+    <changeSet id="20210331121558-relationship-constraints" author="jhipster">
+        <addUniqueConstraint tableName="abc"
+            columnNames="xyz_id"
+            constraintName="ux_abc__xyz_id"/>
+            </changeSet>
+    
+
+    <!--
+        Added the relationship constraints for entity Abc.
+    -->
+    <changeSet id="20210331121558-relationship-foreign-keys" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="xyz_id"
+                                 baseTableName="abc"
+                                 constraintName="fk_abc__xyz_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="xyz"/>
+    </changeSet>
+</databaseChangeLog>

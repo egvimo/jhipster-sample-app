@@ -41,6 +41,7 @@
     "pages": [],
     "nativeLanguage": "en",
     "creationTimestamp": 1617192667395,
-    "lastLiquibaseTimestamp": 1617192787000
+    "lastLiquibaseTimestamp": 1617192959000,
+    "incrementalChangelog": true
   }
 }

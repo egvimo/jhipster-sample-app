@@ -1,9 +1,6 @@
 package sample.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import org.hibernate.annotations.Cache;
@@ -28,10 +25,9 @@ public class Abc implements Serializable {
     @Column(name = "name", nullable = false, unique = true)
     private String name;
 
-    @OneToMany(mappedBy = "parent")
-    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @JsonIgnoreProperties(value = { "parent" }, allowSetters = true)
-    private Set<Xyz> children = new HashSet<>();
+    @OneToOne
+    @JoinColumn(unique = true)
+    private Xyz xyz;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
@@ -60,35 +56,17 @@ public class Abc implements Serializable {
         this.name = name;
     }
 
-    public Set<Xyz> getChildren() {
-        return this.children;
+    public Xyz getXyz() {
+        return this.xyz;
     }
 
-    public Abc children(Set<Xyz> xyzs) {
-        this.setChildren(xyzs);
+    public Abc xyz(Xyz xyz) {
+        this.setXyz(xyz);
         return this;
     }
 
-    public Abc addChildren(Xyz xyz) {
-        this.children.add(xyz);
-        xyz.setParent(this);
-        return this;
-    }
-
-    public Abc removeChildren(Xyz xyz) {
-        this.children.remove(xyz);
-        xyz.setParent(null);
-        return this;
-    }
-
-    public void setChildren(Set<Xyz> xyzs) {
-        if (this.children != null) {
-            this.children.forEach(i -> i.setParent(null));
-        }
-        if (xyzs != null) {
-            xyzs.forEach(i -> i.setParent(this));
-        }
-        this.children = xyzs;
+    public void setXyz(Xyz xyz) {
+        this.xyz = xyz;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here

@@ -20,5 +20,9 @@
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="config/liquibase/changelog/20210331121307_added_entity_constraints_Xyz.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
+    <include file="config/liquibase/changelog/20210331121558_updated_entity_Abc.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20210331121558_updated_entity_migrate_Abc.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20210331121558_updated_entity_constraints_Abc.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20210331121559_updated_entity_Xyz.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->
 </databaseChangeLog>

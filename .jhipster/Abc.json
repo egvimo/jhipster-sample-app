@@ -9,10 +9,11 @@
   ],
   "relationships": [
     {
-      "relationshipType": "one-to-many",
+      "relationshipType": "one-to-one",
       "otherEntityName": "xyz",
-      "otherEntityRelationshipName": "parent",
-      "relationshipName": "children"
+      "otherEntityRelationshipName": "abc",
+      "relationshipName": "xyz",
+      "ownerSide": true
     }
   ],
   "entityTableName": "abc",
@@ -24,5 +25,6 @@
   "readOnly": false,
   "embedded": false,
   "applications": ["sample"],
-  "changelogDate": "20210331121207"
+  "changelogDate": "20210331121207",
+  "incrementalChangelog": false
 }

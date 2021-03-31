@@ -7,14 +7,7 @@
       "fieldValidateRules": ["unique", "required"]
     }
   ],
-  "relationships": [
-    {
-      "relationshipType": "many-to-one",
-      "otherEntityName": "abc",
-      "otherEntityRelationshipName": "children",
-      "relationshipName": "parent"
-    }
-  ],
+  "relationships": [],
   "entityTableName": "xyz",
   "dto": "no",
   "pagination": "no",
@@ -25,5 +18,6 @@
   "embedded": false,
   "applications": ["sample"],
   "skipClient": true,
-  "changelogDate": "20210331121307"
+  "changelogDate": "20210331121307",
+  "incrementalChangelog": false
 }

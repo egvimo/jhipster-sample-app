@@ -1,6 +1,5 @@
 package sample.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import javax.persistence.*;
 import javax.validation.constraints.*;
@@ -25,10 +24,6 @@ public class Xyz implements Serializable {
     @NotNull
     @Column(name = "name", nullable = false, unique = true)
     private String name;
-
-    @ManyToOne
-    @JsonIgnoreProperties(value = { "children" }, allowSetters = true)
-    private Abc parent;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
@@ -55,19 +50,6 @@ public class Xyz implements Serializable {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Abc getParent() {
-        return this.parent;
-    }
-
-    public Xyz parent(Abc abc) {
-        this.setParent(abc);
-        return this;
-    }
-
-    public void setParent(Abc abc) {
-        this.parent = abc;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here

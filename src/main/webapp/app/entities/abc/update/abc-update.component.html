@@ -22,6 +22,19 @@
             </small>
           </div>
         </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="sampleApp.abc.xyz" for="field_xyz">Xyz</label>
+          <select class="form-control" id="field_xyz" data-cy="xyz" name="xyz" formControlName="xyz">
+            <option [ngValue]="null"></option>
+            <option
+              [ngValue]="xyzOption.id === editForm.get('xyz')!.value?.id ? editForm.get('xyz')!.value : xyzOption"
+              *ngFor="let xyzOption of xyzsCollection; trackBy: trackXyzById"
+            >
+              {{ xyzOption.id }}
+            </option>
+          </select>
+        </div>
       </div>
 
       <div>

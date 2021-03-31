@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <!--
+        Added relationships to the entity Abc.
+    -->
+    <changeSet id="20210331121558-1-add-relationships" author="jhipster">
+        <addColumn tableName="abc">
+            <column name="xyz_id" type="bigint"/>
+        </addColumn>
+        
+
+    <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->
+
+</databaseChangeLog>
