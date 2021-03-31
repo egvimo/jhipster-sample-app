@@ -3,6 +3,7 @@ package sample.web.rest;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -60,20 +61,30 @@ public class AbcResource {
     }
 
     /**
-     * {@code PUT  /abcs} : Updates an existing abc.
+     * {@code PUT  /abcs/:id} : Updates an existing abc.
      *
+     * @param id the id of the abc to save.
      * @param abc the abc to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated abc,
      * or with status {@code 400 (Bad Request)} if the abc is not valid,
      * or with status {@code 500 (Internal Server Error)} if the abc couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PutMapping("/abcs")
-    public ResponseEntity<Abc> updateAbc(@Valid @RequestBody Abc abc) throws URISyntaxException {
-        log.debug("REST request to update Abc : {}", abc);
+    @PutMapping("/abcs/{id}")
+    public ResponseEntity<Abc> updateAbc(@PathVariable(value = "id", required = false) final Long id, @Valid @RequestBody Abc abc)
+        throws URISyntaxException {
+        log.debug("REST request to update Abc : {}, {}", id, abc);
         if (abc.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
+        if (!Objects.equals(id, abc.getId())) {
+            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
+        }
+
+        if (!abcRepository.existsById(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+
         Abc result = abcRepository.save(abc);
         return ResponseEntity
             .ok()
@@ -82,8 +93,9 @@ public class AbcResource {
     }
 
     /**
-     * {@code PATCH  /abcs} : Updates given fields of an existing abc.
+     * {@code PATCH  /abcs/:id} : Partial updates given fields of an existing abc, field will ignore if it is null
      *
+     * @param id the id of the abc to save.
      * @param abc the abc to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated abc,
      * or with status {@code 400 (Bad Request)} if the abc is not valid,
@@ -91,11 +103,19 @@ public class AbcResource {
      * or with status {@code 500 (Internal Server Error)} if the abc couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PatchMapping(value = "/abcs", consumes = "application/merge-patch+json")
-    public ResponseEntity<Abc> partialUpdateAbc(@NotNull @RequestBody Abc abc) throws URISyntaxException {
-        log.debug("REST request to update Abc partially : {}", abc);
+    @PatchMapping(value = "/abcs/{id}", consumes = "application/merge-patch+json")
+    public ResponseEntity<Abc> partialUpdateAbc(@PathVariable(value = "id", required = false) final Long id, @NotNull @RequestBody Abc abc)
+        throws URISyntaxException {
+        log.debug("REST request to partial update Abc partially : {}, {}", id, abc);
         if (abc.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+        }
+        if (!Objects.equals(id, abc.getId())) {
+            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
+        }
+
+        if (!abcRepository.existsById(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
         Optional<Abc> result = abcRepository

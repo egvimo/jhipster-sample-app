@@ -2,9 +2,9 @@
 version: '3.8'
 services:
   sample-postgresql:
-    image: postgres:13.1
+    image: postgres:13.2
     # volumes:
-    #     - ~/volumes/jhipster/sample/postgresql/:/var/lib/postgresql/data/
+    #   - ~/volumes/jhipster/sample/postgresql/:/var/lib/postgresql/data/
     environment:
       - POSTGRES_USER=sample
       - POSTGRES_PASSWORD=

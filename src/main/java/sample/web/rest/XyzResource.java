@@ -3,6 +3,7 @@ package sample.web.rest;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -60,20 +61,30 @@ public class XyzResource {
     }
 
     /**
-     * {@code PUT  /xyzs} : Updates an existing xyz.
+     * {@code PUT  /xyzs/:id} : Updates an existing xyz.
      *
+     * @param id the id of the xyz to save.
      * @param xyz the xyz to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated xyz,
      * or with status {@code 400 (Bad Request)} if the xyz is not valid,
      * or with status {@code 500 (Internal Server Error)} if the xyz couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PutMapping("/xyzs")
-    public ResponseEntity<Xyz> updateXyz(@Valid @RequestBody Xyz xyz) throws URISyntaxException {
-        log.debug("REST request to update Xyz : {}", xyz);
+    @PutMapping("/xyzs/{id}")
+    public ResponseEntity<Xyz> updateXyz(@PathVariable(value = "id", required = false) final Long id, @Valid @RequestBody Xyz xyz)
+        throws URISyntaxException {
+        log.debug("REST request to update Xyz : {}, {}", id, xyz);
         if (xyz.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
+        if (!Objects.equals(id, xyz.getId())) {
+            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
+        }
+
+        if (!xyzRepository.existsById(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+
         Xyz result = xyzRepository.save(xyz);
         return ResponseEntity
             .ok()
@@ -82,8 +93,9 @@ public class XyzResource {
     }
 
     /**
-     * {@code PATCH  /xyzs} : Updates given fields of an existing xyz.
+     * {@code PATCH  /xyzs/:id} : Partial updates given fields of an existing xyz, field will ignore if it is null
      *
+     * @param id the id of the xyz to save.
      * @param xyz the xyz to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated xyz,
      * or with status {@code 400 (Bad Request)} if the xyz is not valid,
@@ -91,11 +103,19 @@ public class XyzResource {
      * or with status {@code 500 (Internal Server Error)} if the xyz couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PatchMapping(value = "/xyzs", consumes = "application/merge-patch+json")
-    public ResponseEntity<Xyz> partialUpdateXyz(@NotNull @RequestBody Xyz xyz) throws URISyntaxException {
-        log.debug("REST request to update Xyz partially : {}", xyz);
+    @PatchMapping(value = "/xyzs/{id}", consumes = "application/merge-patch+json")
+    public ResponseEntity<Xyz> partialUpdateXyz(@PathVariable(value = "id", required = false) final Long id, @NotNull @RequestBody Xyz xyz)
+        throws URISyntaxException {
+        log.debug("REST request to partial update Xyz partially : {}, {}", id, xyz);
         if (xyz.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+        }
+        if (!Objects.equals(id, xyz.getId())) {
+            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
+        }
+
+        if (!xyzRepository.existsById(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
         Optional<Xyz> result = xyzRepository

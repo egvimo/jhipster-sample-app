@@ -9,7 +9,7 @@ import { AbcService } from '../service/abc.service';
 
 @Injectable({ providedIn: 'root' })
 export class AbcRoutingResolveService implements Resolve<IAbc> {
-  constructor(private service: AbcService, private router: Router) {}
+  constructor(protected service: AbcService, protected router: Router) {}
 
   resolve(route: ActivatedRouteSnapshot): Observable<IAbc> | Observable<never> {
     const id = route.params['id'];

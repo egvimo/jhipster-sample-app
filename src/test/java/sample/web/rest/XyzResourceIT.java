@@ -7,6 +7,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import java.util.List;
+import java.util.Random;
+import java.util.concurrent.atomic.AtomicLong;
 import javax.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -30,6 +32,12 @@ class XyzResourceIT {
 
     private static final String DEFAULT_NAME = "AAAAAAAAAA";
     private static final String UPDATED_NAME = "BBBBBBBBBB";
+
+    private static final String ENTITY_API_URL = "/api/xyzs";
+    private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
+
+    private static Random random = new Random();
+    private static AtomicLong count = new AtomicLong(random.nextInt() + (2 * Integer.MAX_VALUE));
 
     @Autowired
     private XyzRepository xyzRepository;
@@ -75,7 +83,9 @@ class XyzResourceIT {
         int databaseSizeBeforeCreate = xyzRepository.findAll().size();
         // Create the Xyz
         restXyzMockMvc
-            .perform(post("/api/xyzs").with(csrf()).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(xyz)))
+            .perform(
+                post(ENTITY_API_URL).with(csrf()).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(xyz))
+            )
             .andExpect(status().isCreated());
 
         // Validate the Xyz in the database
@@ -95,7 +105,9 @@ class XyzResourceIT {
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restXyzMockMvc
-            .perform(post("/api/xyzs").with(csrf()).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(xyz)))
+            .perform(
+                post(ENTITY_API_URL).with(csrf()).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(xyz))
+            )
             .andExpect(status().isBadRequest());
 
         // Validate the Xyz in the database
@@ -113,7 +125,9 @@ class XyzResourceIT {
         // Create the Xyz, which fails.
 
         restXyzMockMvc
-            .perform(post("/api/xyzs").with(csrf()).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(xyz)))
+            .perform(
+                post(ENTITY_API_URL).with(csrf()).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(xyz))
+            )
             .andExpect(status().isBadRequest());
 
         List<Xyz> xyzList = xyzRepository.findAll();
@@ -128,7 +142,7 @@ class XyzResourceIT {
 
         // Get all the xyzList
         restXyzMockMvc
-            .perform(get("/api/xyzs?sort=id,desc"))
+            .perform(get(ENTITY_API_URL + "?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(xyz.getId().intValue())))
@@ -143,7 +157,7 @@ class XyzResourceIT {
 
         // Get the xyz
         restXyzMockMvc
-            .perform(get("/api/xyzs/{id}", xyz.getId()))
+            .perform(get(ENTITY_API_URL_ID, xyz.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(xyz.getId().intValue()))
@@ -154,12 +168,12 @@ class XyzResourceIT {
     @Transactional
     void getNonExistingXyz() throws Exception {
         // Get the xyz
-        restXyzMockMvc.perform(get("/api/xyzs/{id}", Long.MAX_VALUE)).andExpect(status().isNotFound());
+        restXyzMockMvc.perform(get(ENTITY_API_URL_ID, Long.MAX_VALUE)).andExpect(status().isNotFound());
     }
 
     @Test
     @Transactional
-    void updateXyz() throws Exception {
+    void putNewXyz() throws Exception {
         // Initialize the database
         xyzRepository.saveAndFlush(xyz);
 
@@ -173,7 +187,10 @@ class XyzResourceIT {
 
         restXyzMockMvc
             .perform(
-                put("/api/xyzs").with(csrf()).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(updatedXyz))
+                put(ENTITY_API_URL_ID, updatedXyz.getId())
+                    .with(csrf())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(updatedXyz))
             )
             .andExpect(status().isOk());
 
@@ -186,13 +203,58 @@ class XyzResourceIT {
 
     @Test
     @Transactional
-    void updateNonExistingXyz() throws Exception {
+    void putNonExistingXyz() throws Exception {
         int databaseSizeBeforeUpdate = xyzRepository.findAll().size();
+        xyz.setId(count.incrementAndGet());
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restXyzMockMvc
-            .perform(put("/api/xyzs").with(csrf()).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(xyz)))
+            .perform(
+                put(ENTITY_API_URL_ID, xyz.getId())
+                    .with(csrf())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(xyz))
+            )
             .andExpect(status().isBadRequest());
+
+        // Validate the Xyz in the database
+        List<Xyz> xyzList = xyzRepository.findAll();
+        assertThat(xyzList).hasSize(databaseSizeBeforeUpdate);
+    }
+
+    @Test
+    @Transactional
+    void putWithIdMismatchXyz() throws Exception {
+        int databaseSizeBeforeUpdate = xyzRepository.findAll().size();
+        xyz.setId(count.incrementAndGet());
+
+        // If url ID doesn't match entity ID, it will throw BadRequestAlertException
+        restXyzMockMvc
+            .perform(
+                put(ENTITY_API_URL_ID, count.incrementAndGet())
+                    .with(csrf())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(xyz))
+            )
+            .andExpect(status().isBadRequest());
+
+        // Validate the Xyz in the database
+        List<Xyz> xyzList = xyzRepository.findAll();
+        assertThat(xyzList).hasSize(databaseSizeBeforeUpdate);
+    }
+
+    @Test
+    @Transactional
+    void putWithMissingIdPathParamXyz() throws Exception {
+        int databaseSizeBeforeUpdate = xyzRepository.findAll().size();
+        xyz.setId(count.incrementAndGet());
+
+        // If url ID doesn't match entity ID, it will throw BadRequestAlertException
+        restXyzMockMvc
+            .perform(
+                put(ENTITY_API_URL).with(csrf()).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(xyz))
+            )
+            .andExpect(status().isMethodNotAllowed());
 
         // Validate the Xyz in the database
         List<Xyz> xyzList = xyzRepository.findAll();
@@ -213,7 +275,7 @@ class XyzResourceIT {
 
         restXyzMockMvc
             .perform(
-                patch("/api/xyzs")
+                patch(ENTITY_API_URL_ID, partialUpdatedXyz.getId())
                     .with(csrf())
                     .contentType("application/merge-patch+json")
                     .content(TestUtil.convertObjectToJsonBytes(partialUpdatedXyz))
@@ -243,7 +305,7 @@ class XyzResourceIT {
 
         restXyzMockMvc
             .perform(
-                patch("/api/xyzs")
+                patch(ENTITY_API_URL_ID, partialUpdatedXyz.getId())
                     .with(csrf())
                     .contentType("application/merge-patch+json")
                     .content(TestUtil.convertObjectToJsonBytes(partialUpdatedXyz))
@@ -259,18 +321,65 @@ class XyzResourceIT {
 
     @Test
     @Transactional
-    void partialUpdateXyzShouldThrown() throws Exception {
-        // Update the xyz without id should throw
-        Xyz partialUpdatedXyz = new Xyz();
+    void patchNonExistingXyz() throws Exception {
+        int databaseSizeBeforeUpdate = xyzRepository.findAll().size();
+        xyz.setId(count.incrementAndGet());
 
+        // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restXyzMockMvc
             .perform(
-                patch("/api/xyzs")
+                patch(ENTITY_API_URL_ID, xyz.getId())
                     .with(csrf())
                     .contentType("application/merge-patch+json")
-                    .content(TestUtil.convertObjectToJsonBytes(partialUpdatedXyz))
+                    .content(TestUtil.convertObjectToJsonBytes(xyz))
             )
             .andExpect(status().isBadRequest());
+
+        // Validate the Xyz in the database
+        List<Xyz> xyzList = xyzRepository.findAll();
+        assertThat(xyzList).hasSize(databaseSizeBeforeUpdate);
+    }
+
+    @Test
+    @Transactional
+    void patchWithIdMismatchXyz() throws Exception {
+        int databaseSizeBeforeUpdate = xyzRepository.findAll().size();
+        xyz.setId(count.incrementAndGet());
+
+        // If url ID doesn't match entity ID, it will throw BadRequestAlertException
+        restXyzMockMvc
+            .perform(
+                patch(ENTITY_API_URL_ID, count.incrementAndGet())
+                    .with(csrf())
+                    .contentType("application/merge-patch+json")
+                    .content(TestUtil.convertObjectToJsonBytes(xyz))
+            )
+            .andExpect(status().isBadRequest());
+
+        // Validate the Xyz in the database
+        List<Xyz> xyzList = xyzRepository.findAll();
+        assertThat(xyzList).hasSize(databaseSizeBeforeUpdate);
+    }
+
+    @Test
+    @Transactional
+    void patchWithMissingIdPathParamXyz() throws Exception {
+        int databaseSizeBeforeUpdate = xyzRepository.findAll().size();
+        xyz.setId(count.incrementAndGet());
+
+        // If url ID doesn't match entity ID, it will throw BadRequestAlertException
+        restXyzMockMvc
+            .perform(
+                patch(ENTITY_API_URL)
+                    .with(csrf())
+                    .contentType("application/merge-patch+json")
+                    .content(TestUtil.convertObjectToJsonBytes(xyz))
+            )
+            .andExpect(status().isMethodNotAllowed());
+
+        // Validate the Xyz in the database
+        List<Xyz> xyzList = xyzRepository.findAll();
+        assertThat(xyzList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
@@ -283,7 +392,7 @@ class XyzResourceIT {
 
         // Delete the xyz
         restXyzMockMvc
-            .perform(delete("/api/xyzs/{id}", xyz.getId()).with(csrf()).accept(MediaType.APPLICATION_JSON))
+            .perform(delete(ENTITY_API_URL_ID, xyz.getId()).with(csrf()).accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item

@@ -25,7 +25,7 @@
     "packageName": "sample",
     "packageFolder": "sample",
     "applicationType": "monolith",
-    "jhipsterVersion": "7.0.0-beta.1",
+    "jhipsterVersion": "7.0.0",
     "skipServer": false,
     "clientPackageManager": "npm",
     "dtoSuffix": "DTO",
@@ -40,7 +40,7 @@
     "otherModules": [],
     "pages": [],
     "nativeLanguage": "en",
-    "creationTimestamp": 1611660199149,
-    "lastLiquibaseTimestamp": 1611660319000
+    "creationTimestamp": 1617192667395,
+    "lastLiquibaseTimestamp": 1617192787000
   }
 }

@@ -7,6 +7,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import java.util.List;
+import java.util.Random;
+import java.util.concurrent.atomic.AtomicLong;
 import javax.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -30,6 +32,12 @@ class AbcResourceIT {
 
     private static final String DEFAULT_NAME = "AAAAAAAAAA";
     private static final String UPDATED_NAME = "BBBBBBBBBB";
+
+    private static final String ENTITY_API_URL = "/api/abcs";
+    private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
+
+    private static Random random = new Random();
+    private static AtomicLong count = new AtomicLong(random.nextInt() + (2 * Integer.MAX_VALUE));
 
     @Autowired
     private AbcRepository abcRepository;
@@ -75,7 +83,9 @@ class AbcResourceIT {
         int databaseSizeBeforeCreate = abcRepository.findAll().size();
         // Create the Abc
         restAbcMockMvc
-            .perform(post("/api/abcs").with(csrf()).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(abc)))
+            .perform(
+                post(ENTITY_API_URL).with(csrf()).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(abc))
+            )
             .andExpect(status().isCreated());
 
         // Validate the Abc in the database
@@ -95,7 +105,9 @@ class AbcResourceIT {
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restAbcMockMvc
-            .perform(post("/api/abcs").with(csrf()).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(abc)))
+            .perform(
+                post(ENTITY_API_URL).with(csrf()).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(abc))
+            )
             .andExpect(status().isBadRequest());
 
         // Validate the Abc in the database
@@ -113,7 +125,9 @@ class AbcResourceIT {
         // Create the Abc, which fails.
 
         restAbcMockMvc
-            .perform(post("/api/abcs").with(csrf()).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(abc)))
+            .perform(
+                post(ENTITY_API_URL).with(csrf()).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(abc))
+            )
             .andExpect(status().isBadRequest());
 
         List<Abc> abcList = abcRepository.findAll();
@@ -128,7 +142,7 @@ class AbcResourceIT {
 
         // Get all the abcList
         restAbcMockMvc
-            .perform(get("/api/abcs?sort=id,desc"))
+            .perform(get(ENTITY_API_URL + "?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(abc.getId().intValue())))
@@ -143,7 +157,7 @@ class AbcResourceIT {
 
         // Get the abc
         restAbcMockMvc
-            .perform(get("/api/abcs/{id}", abc.getId()))
+            .perform(get(ENTITY_API_URL_ID, abc.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(abc.getId().intValue()))
@@ -154,12 +168,12 @@ class AbcResourceIT {
     @Transactional
     void getNonExistingAbc() throws Exception {
         // Get the abc
-        restAbcMockMvc.perform(get("/api/abcs/{id}", Long.MAX_VALUE)).andExpect(status().isNotFound());
+        restAbcMockMvc.perform(get(ENTITY_API_URL_ID, Long.MAX_VALUE)).andExpect(status().isNotFound());
     }
 
     @Test
     @Transactional
-    void updateAbc() throws Exception {
+    void putNewAbc() throws Exception {
         // Initialize the database
         abcRepository.saveAndFlush(abc);
 
@@ -173,7 +187,10 @@ class AbcResourceIT {
 
         restAbcMockMvc
             .perform(
-                put("/api/abcs").with(csrf()).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(updatedAbc))
+                put(ENTITY_API_URL_ID, updatedAbc.getId())
+                    .with(csrf())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(updatedAbc))
             )
             .andExpect(status().isOk());
 
@@ -186,13 +203,58 @@ class AbcResourceIT {
 
     @Test
     @Transactional
-    void updateNonExistingAbc() throws Exception {
+    void putNonExistingAbc() throws Exception {
         int databaseSizeBeforeUpdate = abcRepository.findAll().size();
+        abc.setId(count.incrementAndGet());
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restAbcMockMvc
-            .perform(put("/api/abcs").with(csrf()).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(abc)))
+            .perform(
+                put(ENTITY_API_URL_ID, abc.getId())
+                    .with(csrf())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(abc))
+            )
             .andExpect(status().isBadRequest());
+
+        // Validate the Abc in the database
+        List<Abc> abcList = abcRepository.findAll();
+        assertThat(abcList).hasSize(databaseSizeBeforeUpdate);
+    }
+
+    @Test
+    @Transactional
+    void putWithIdMismatchAbc() throws Exception {
+        int databaseSizeBeforeUpdate = abcRepository.findAll().size();
+        abc.setId(count.incrementAndGet());
+
+        // If url ID doesn't match entity ID, it will throw BadRequestAlertException
+        restAbcMockMvc
+            .perform(
+                put(ENTITY_API_URL_ID, count.incrementAndGet())
+                    .with(csrf())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(abc))
+            )
+            .andExpect(status().isBadRequest());
+
+        // Validate the Abc in the database
+        List<Abc> abcList = abcRepository.findAll();
+        assertThat(abcList).hasSize(databaseSizeBeforeUpdate);
+    }
+
+    @Test
+    @Transactional
+    void putWithMissingIdPathParamAbc() throws Exception {
+        int databaseSizeBeforeUpdate = abcRepository.findAll().size();
+        abc.setId(count.incrementAndGet());
+
+        // If url ID doesn't match entity ID, it will throw BadRequestAlertException
+        restAbcMockMvc
+            .perform(
+                put(ENTITY_API_URL).with(csrf()).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(abc))
+            )
+            .andExpect(status().isMethodNotAllowed());
 
         // Validate the Abc in the database
         List<Abc> abcList = abcRepository.findAll();
@@ -215,7 +277,7 @@ class AbcResourceIT {
 
         restAbcMockMvc
             .perform(
-                patch("/api/abcs")
+                patch(ENTITY_API_URL_ID, partialUpdatedAbc.getId())
                     .with(csrf())
                     .contentType("application/merge-patch+json")
                     .content(TestUtil.convertObjectToJsonBytes(partialUpdatedAbc))
@@ -245,7 +307,7 @@ class AbcResourceIT {
 
         restAbcMockMvc
             .perform(
-                patch("/api/abcs")
+                patch(ENTITY_API_URL_ID, partialUpdatedAbc.getId())
                     .with(csrf())
                     .contentType("application/merge-patch+json")
                     .content(TestUtil.convertObjectToJsonBytes(partialUpdatedAbc))
@@ -261,18 +323,65 @@ class AbcResourceIT {
 
     @Test
     @Transactional
-    void partialUpdateAbcShouldThrown() throws Exception {
-        // Update the abc without id should throw
-        Abc partialUpdatedAbc = new Abc();
+    void patchNonExistingAbc() throws Exception {
+        int databaseSizeBeforeUpdate = abcRepository.findAll().size();
+        abc.setId(count.incrementAndGet());
 
+        // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restAbcMockMvc
             .perform(
-                patch("/api/abcs")
+                patch(ENTITY_API_URL_ID, abc.getId())
                     .with(csrf())
                     .contentType("application/merge-patch+json")
-                    .content(TestUtil.convertObjectToJsonBytes(partialUpdatedAbc))
+                    .content(TestUtil.convertObjectToJsonBytes(abc))
             )
             .andExpect(status().isBadRequest());
+
+        // Validate the Abc in the database
+        List<Abc> abcList = abcRepository.findAll();
+        assertThat(abcList).hasSize(databaseSizeBeforeUpdate);
+    }
+
+    @Test
+    @Transactional
+    void patchWithIdMismatchAbc() throws Exception {
+        int databaseSizeBeforeUpdate = abcRepository.findAll().size();
+        abc.setId(count.incrementAndGet());
+
+        // If url ID doesn't match entity ID, it will throw BadRequestAlertException
+        restAbcMockMvc
+            .perform(
+                patch(ENTITY_API_URL_ID, count.incrementAndGet())
+                    .with(csrf())
+                    .contentType("application/merge-patch+json")
+                    .content(TestUtil.convertObjectToJsonBytes(abc))
+            )
+            .andExpect(status().isBadRequest());
+
+        // Validate the Abc in the database
+        List<Abc> abcList = abcRepository.findAll();
+        assertThat(abcList).hasSize(databaseSizeBeforeUpdate);
+    }
+
+    @Test
+    @Transactional
+    void patchWithMissingIdPathParamAbc() throws Exception {
+        int databaseSizeBeforeUpdate = abcRepository.findAll().size();
+        abc.setId(count.incrementAndGet());
+
+        // If url ID doesn't match entity ID, it will throw BadRequestAlertException
+        restAbcMockMvc
+            .perform(
+                patch(ENTITY_API_URL)
+                    .with(csrf())
+                    .contentType("application/merge-patch+json")
+                    .content(TestUtil.convertObjectToJsonBytes(abc))
+            )
+            .andExpect(status().isMethodNotAllowed());
+
+        // Validate the Abc in the database
+        List<Abc> abcList = abcRepository.findAll();
+        assertThat(abcList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
@@ -285,7 +394,7 @@ class AbcResourceIT {
 
         // Delete the abc
         restAbcMockMvc
-            .perform(delete("/api/abcs/{id}", abc.getId()).with(csrf()).accept(MediaType.APPLICATION_JSON))
+            .perform(delete(ENTITY_API_URL_ID, abc.getId()).with(csrf()).accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item

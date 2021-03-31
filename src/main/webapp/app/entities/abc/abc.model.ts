@@ -9,3 +9,7 @@ export interface IAbc {
 export class Abc implements IAbc {
   constructor(public id?: number, public name?: string, public children?: IXyz[] | null) {}
 }
+
+export function getAbcIdentifier(abc: IAbc): number | undefined {
+  return abc.id;
+}

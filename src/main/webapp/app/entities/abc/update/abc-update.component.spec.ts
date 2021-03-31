@@ -1,14 +1,14 @@
 jest.mock('@angular/router');
 
-import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpResponse } from '@angular/common/http';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { of } from 'rxjs';
+import { of, Subject } from 'rxjs';
 
 import { AbcService } from '../service/abc.service';
-import { Abc } from '../abc.model';
+import { IAbc, Abc } from '../abc.model';
 
 import { AbcUpdateComponent } from './abc-update.component';
 
@@ -16,7 +16,8 @@ describe('Component Tests', () => {
   describe('Abc Management Update Component', () => {
     let comp: AbcUpdateComponent;
     let fixture: ComponentFixture<AbcUpdateComponent>;
-    let service: AbcService;
+    let activatedRoute: ActivatedRoute;
+    let abcService: AbcService;
 
     beforeEach(() => {
       TestBed.configureTestingModule({
@@ -28,38 +29,85 @@ describe('Component Tests', () => {
         .compileComponents();
 
       fixture = TestBed.createComponent(AbcUpdateComponent);
+      activatedRoute = TestBed.inject(ActivatedRoute);
+      abcService = TestBed.inject(AbcService);
+
       comp = fixture.componentInstance;
-      service = TestBed.inject(AbcService);
+    });
+
+    describe('ngOnInit', () => {
+      it('Should update editForm', () => {
+        const abc: IAbc = { id: 456 };
+
+        activatedRoute.data = of({ abc });
+        comp.ngOnInit();
+
+        expect(comp.editForm.value).toEqual(expect.objectContaining(abc));
+      });
     });
 
     describe('save', () => {
-      it('Should call update service on save for existing entity', fakeAsync(() => {
+      it('Should call update service on save for existing entity', () => {
         // GIVEN
-        const entity = new Abc(123);
-        spyOn(service, 'update').and.returnValue(of(new HttpResponse({ body: entity })));
-        comp.updateForm(entity);
+        const saveSubject = new Subject();
+        const abc = { id: 123 };
+        spyOn(abcService, 'update').and.returnValue(saveSubject);
+        spyOn(comp, 'previousState');
+        activatedRoute.data = of({ abc });
+        comp.ngOnInit();
+
         // WHEN
         comp.save();
-        tick(); // simulate async
+        expect(comp.isSaving).toEqual(true);
+        saveSubject.next(new HttpResponse({ body: abc }));
+        saveSubject.complete();
 
         // THEN
-        expect(service.update).toHaveBeenCalledWith(entity);
+        expect(comp.previousState).toHaveBeenCalled();
+        expect(abcService.update).toHaveBeenCalledWith(abc);
         expect(comp.isSaving).toEqual(false);
-      }));
+      });
 
-      it('Should call create service on save for new entity', fakeAsync(() => {
+      it('Should call create service on save for new entity', () => {
         // GIVEN
-        const entity = new Abc();
-        spyOn(service, 'create').and.returnValue(of(new HttpResponse({ body: entity })));
-        comp.updateForm(entity);
+        const saveSubject = new Subject();
+        const abc = new Abc();
+        spyOn(abcService, 'create').and.returnValue(saveSubject);
+        spyOn(comp, 'previousState');
+        activatedRoute.data = of({ abc });
+        comp.ngOnInit();
+
         // WHEN
         comp.save();
-        tick(); // simulate async
+        expect(comp.isSaving).toEqual(true);
+        saveSubject.next(new HttpResponse({ body: abc }));
+        saveSubject.complete();
 
         // THEN
-        expect(service.create).toHaveBeenCalledWith(entity);
+        expect(abcService.create).toHaveBeenCalledWith(abc);
         expect(comp.isSaving).toEqual(false);
-      }));
+        expect(comp.previousState).toHaveBeenCalled();
+      });
+
+      it('Should set isSaving to false on error', () => {
+        // GIVEN
+        const saveSubject = new Subject();
+        const abc = { id: 123 };
+        spyOn(abcService, 'update').and.returnValue(saveSubject);
+        spyOn(comp, 'previousState');
+        activatedRoute.data = of({ abc });
+        comp.ngOnInit();
+
+        // WHEN
+        comp.save();
+        expect(comp.isSaving).toEqual(true);
+        saveSubject.error('This is an error!');
+
+        // THEN
+        expect(abcService.update).toHaveBeenCalledWith(abc);
+        expect(comp.isSaving).toEqual(false);
+        expect(comp.previousState).not.toHaveBeenCalled();
+      });
     });
   });
 });

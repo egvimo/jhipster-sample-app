@@ -4,7 +4,6 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { of } from 'rxjs';
 
 import { AbcService } from '../service/abc.service';
-import { Abc } from '../abc.model';
 
 import { AbcComponent } from './abc.component';
 
@@ -25,20 +24,19 @@ describe('Component Tests', () => {
       fixture = TestBed.createComponent(AbcComponent);
       comp = fixture.componentInstance;
       service = TestBed.inject(AbcService);
-    });
 
-    it('Should call load all on init', () => {
-      // GIVEN
       const headers = new HttpHeaders().append('link', 'link;link');
       spyOn(service, 'query').and.returnValue(
         of(
           new HttpResponse({
-            body: [new Abc(123)],
+            body: [{ id: 123 }],
             headers,
           })
         )
       );
+    });
 
+    it('Should call load all on init', () => {
       // WHEN
       comp.ngOnInit();
 

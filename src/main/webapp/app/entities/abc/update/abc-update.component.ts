@@ -3,6 +3,7 @@ import { HttpResponse } from '@angular/common/http';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
+import { finalize } from 'rxjs/operators';
 
 import { IAbc, Abc } from '../abc.model';
 import { AbcService } from '../service/abc.service';
@@ -19,18 +20,11 @@ export class AbcUpdateComponent implements OnInit {
     name: [null, [Validators.required]],
   });
 
-  constructor(protected abcService: AbcService, protected activatedRoute: ActivatedRoute, private fb: FormBuilder) {}
+  constructor(protected abcService: AbcService, protected activatedRoute: ActivatedRoute, protected fb: FormBuilder) {}
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ abc }) => {
       this.updateForm(abc);
-    });
-  }
-
-  updateForm(abc: IAbc): void {
-    this.editForm.patchValue({
-      id: abc.id,
-      name: abc.name,
     });
   }
 
@@ -48,27 +42,37 @@ export class AbcUpdateComponent implements OnInit {
     }
   }
 
-  private createFromForm(): IAbc {
-    return {
-      ...new Abc(),
-      id: this.editForm.get(['id'])!.value,
-      name: this.editForm.get(['name'])!.value,
-    };
-  }
-
   protected subscribeToSaveResponse(result: Observable<HttpResponse<IAbc>>): void {
-    result.subscribe(
+    result.pipe(finalize(() => this.onSaveFinalize())).subscribe(
       () => this.onSaveSuccess(),
       () => this.onSaveError()
     );
   }
 
   protected onSaveSuccess(): void {
-    this.isSaving = false;
     this.previousState();
   }
 
   protected onSaveError(): void {
+    // Api for inheritance.
+  }
+
+  protected onSaveFinalize(): void {
     this.isSaving = false;
+  }
+
+  protected updateForm(abc: IAbc): void {
+    this.editForm.patchValue({
+      id: abc.id,
+      name: abc.name,
+    });
+  }
+
+  protected createFromForm(): IAbc {
+    return {
+      ...new Abc(),
+      id: this.editForm.get(['id'])!.value,
+      name: this.editForm.get(['name'])!.value,
+    };
   }
 }
