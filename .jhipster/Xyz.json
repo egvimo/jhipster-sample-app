@@ -7,7 +7,14 @@
       "fieldValidateRules": ["unique", "required"]
     }
   ],
-  "relationships": [],
+  "relationships": [
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "joinTable",
+      "otherEntityRelationshipName": "xyz",
+      "relationshipName": "abc"
+    }
+  ],
   "entityTableName": "xyz",
   "dto": "no",
   "pagination": "no",
@@ -17,7 +24,5 @@
   "readOnly": false,
   "embedded": false,
   "applications": ["sample"],
-  "skipClient": true,
-  "changelogDate": "20210331121307",
-  "incrementalChangelog": false
+  "changelogDate": "20210422075351"
 }

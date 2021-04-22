@@ -3,12 +3,10 @@ import { HttpResponse } from '@angular/common/http';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { finalize, map } from 'rxjs/operators';
+import { finalize } from 'rxjs/operators';
 
 import { IAbc, Abc } from '../abc.model';
 import { AbcService } from '../service/abc.service';
-import { IXyz } from 'app/entities/xyz/xyz.model';
-import { XyzService } from 'app/entities/xyz/service/xyz.service';
 
 @Component({
   selector: 'jhi-abc-update',
@@ -17,26 +15,16 @@ import { XyzService } from 'app/entities/xyz/service/xyz.service';
 export class AbcUpdateComponent implements OnInit {
   isSaving = false;
 
-  xyzsCollection: IXyz[] = [];
-
   editForm = this.fb.group({
     id: [],
     name: [null, [Validators.required]],
-    xyz: [],
   });
 
-  constructor(
-    protected abcService: AbcService,
-    protected xyzService: XyzService,
-    protected activatedRoute: ActivatedRoute,
-    protected fb: FormBuilder
-  ) {}
+  constructor(protected abcService: AbcService, protected activatedRoute: ActivatedRoute, protected fb: FormBuilder) {}
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ abc }) => {
       this.updateForm(abc);
-
-      this.loadRelationshipsOptions();
     });
   }
 
@@ -52,10 +40,6 @@ export class AbcUpdateComponent implements OnInit {
     } else {
       this.subscribeToSaveResponse(this.abcService.create(abc));
     }
-  }
-
-  trackXyzById(index: number, item: IXyz): number {
-    return item.id!;
   }
 
   protected subscribeToSaveResponse(result: Observable<HttpResponse<IAbc>>): void {
@@ -81,18 +65,7 @@ export class AbcUpdateComponent implements OnInit {
     this.editForm.patchValue({
       id: abc.id,
       name: abc.name,
-      xyz: abc.xyz,
     });
-
-    this.xyzsCollection = this.xyzService.addXyzToCollectionIfMissing(this.xyzsCollection, abc.xyz);
-  }
-
-  protected loadRelationshipsOptions(): void {
-    this.xyzService
-      .query({ filter: 'abc-is-null' })
-      .pipe(map((res: HttpResponse<IXyz[]>) => res.body ?? []))
-      .pipe(map((xyzs: IXyz[]) => this.xyzService.addXyzToCollectionIfMissing(xyzs, this.editForm.get('xyz')!.value)))
-      .subscribe((xyzs: IXyz[]) => (this.xyzsCollection = xyzs));
   }
 
   protected createFromForm(): IAbc {
@@ -100,7 +73,6 @@ export class AbcUpdateComponent implements OnInit {
       ...new Abc(),
       id: this.editForm.get(['id'])!.value,
       name: this.editForm.get(['name'])!.value,
-      xyz: this.editForm.get(['xyz'])!.value,
     };
   }
 }

@@ -1,6 +1,9 @@
 package sample.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import org.hibernate.annotations.Cache;
@@ -25,9 +28,10 @@ public class Abc implements Serializable {
     @Column(name = "name", nullable = false, unique = true)
     private String name;
 
-    @OneToOne
-    @JoinColumn(unique = true)
-    private Xyz xyz;
+    @OneToMany(mappedBy = "abc")
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @JsonIgnoreProperties(value = { "abc", "xyz" }, allowSetters = true)
+    private Set<JoinTable> xyzs = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
@@ -56,17 +60,35 @@ public class Abc implements Serializable {
         this.name = name;
     }
 
-    public Xyz getXyz() {
-        return this.xyz;
+    public Set<JoinTable> getXyzs() {
+        return this.xyzs;
     }
 
-    public Abc xyz(Xyz xyz) {
-        this.setXyz(xyz);
+    public Abc xyzs(Set<JoinTable> joinTables) {
+        this.setXyzs(joinTables);
         return this;
     }
 
-    public void setXyz(Xyz xyz) {
-        this.xyz = xyz;
+    public Abc addXyz(JoinTable joinTable) {
+        this.xyzs.add(joinTable);
+        joinTable.setAbc(this);
+        return this;
+    }
+
+    public Abc removeXyz(JoinTable joinTable) {
+        this.xyzs.remove(joinTable);
+        joinTable.setAbc(null);
+        return this;
+    }
+
+    public void setXyzs(Set<JoinTable> joinTables) {
+        if (this.xyzs != null) {
+            this.xyzs.forEach(i -> i.setAbc(null));
+        }
+        if (joinTables != null) {
+            joinTables.forEach(i -> i.setAbc(this));
+        }
+        this.xyzs = joinTables;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here

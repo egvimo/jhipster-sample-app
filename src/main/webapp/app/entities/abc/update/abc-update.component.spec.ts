@@ -9,8 +9,6 @@ import { of, Subject } from 'rxjs';
 
 import { AbcService } from '../service/abc.service';
 import { IAbc, Abc } from '../abc.model';
-import { IXyz } from 'app/entities/xyz/xyz.model';
-import { XyzService } from 'app/entities/xyz/service/xyz.service';
 
 import { AbcUpdateComponent } from './abc-update.component';
 
@@ -20,7 +18,6 @@ describe('Component Tests', () => {
     let fixture: ComponentFixture<AbcUpdateComponent>;
     let activatedRoute: ActivatedRoute;
     let abcService: AbcService;
-    let xyzService: XyzService;
 
     beforeEach(() => {
       TestBed.configureTestingModule({
@@ -34,40 +31,18 @@ describe('Component Tests', () => {
       fixture = TestBed.createComponent(AbcUpdateComponent);
       activatedRoute = TestBed.inject(ActivatedRoute);
       abcService = TestBed.inject(AbcService);
-      xyzService = TestBed.inject(XyzService);
 
       comp = fixture.componentInstance;
     });
 
     describe('ngOnInit', () => {
-      it('Should call xyz query and add missing value', () => {
-        const abc: IAbc = { id: 456 };
-        const xyz: IXyz = { id: 30878 };
-        abc.xyz = xyz;
-
-        const xyzCollection: IXyz[] = [{ id: 60408 }];
-        spyOn(xyzService, 'query').and.returnValue(of(new HttpResponse({ body: xyzCollection })));
-        const expectedCollection: IXyz[] = [xyz, ...xyzCollection];
-        spyOn(xyzService, 'addXyzToCollectionIfMissing').and.returnValue(expectedCollection);
-
-        activatedRoute.data = of({ abc });
-        comp.ngOnInit();
-
-        expect(xyzService.query).toHaveBeenCalled();
-        expect(xyzService.addXyzToCollectionIfMissing).toHaveBeenCalledWith(xyzCollection, xyz);
-        expect(comp.xyzsCollection).toEqual(expectedCollection);
-      });
-
       it('Should update editForm', () => {
         const abc: IAbc = { id: 456 };
-        const xyz: IXyz = { id: 82111 };
-        abc.xyz = xyz;
 
         activatedRoute.data = of({ abc });
         comp.ngOnInit();
 
         expect(comp.editForm.value).toEqual(expect.objectContaining(abc));
-        expect(comp.xyzsCollection).toContain(xyz);
       });
     });
 
@@ -132,16 +107,6 @@ describe('Component Tests', () => {
         expect(abcService.update).toHaveBeenCalledWith(abc);
         expect(comp.isSaving).toEqual(false);
         expect(comp.previousState).not.toHaveBeenCalled();
-      });
-    });
-
-    describe('Tracking relationships identifiers', () => {
-      describe('trackXyzById', () => {
-        it('Should return tracked Xyz primary key', () => {
-          const entity = { id: 123 };
-          const trackResult = comp.trackXyzById(0, entity);
-          expect(trackResult).toEqual(entity.id);
-        });
       });
     });
   });

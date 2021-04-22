@@ -34,7 +34,6 @@
         <tr>
           <th scope="col"><span jhiTranslate="global.field.id">ID</span></th>
           <th scope="col"><span jhiTranslate="sampleApp.abc.name">Name</span></th>
-          <th scope="col"><span jhiTranslate="sampleApp.abc.xyz">Xyz</span></th>
           <th scope="col"></th>
         </tr>
       </thead>
@@ -44,11 +43,6 @@
             <a [routerLink]="['/abc', abc.id, 'view']">{{ abc.id }}</a>
           </td>
           <td>{{ abc.name }}</td>
-          <td>
-            <div *ngIf="abc.xyz">
-              <a [routerLink]="['/xyz', abc.xyz?.id, 'view']">{{ abc.xyz?.id }}</a>
-            </div>
-          </td>
           <td class="text-right">
             <div class="btn-group">
               <button type="submit" [routerLink]="['/abc', abc.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">

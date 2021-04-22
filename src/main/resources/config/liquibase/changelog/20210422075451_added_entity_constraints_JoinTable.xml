@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+    <!--
+        Added the constraints for entity JoinTable.
+    -->
+    <changeSet id="20210422075451-2" author="jhipster">
+
+        <addForeignKeyConstraint baseColumnNames="abc_id"
+                                 baseTableName="join_table"
+                                 constraintName="fk_join_table__abc_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="abc"/>
+
+        <addForeignKeyConstraint baseColumnNames="xyz_id"
+                                 baseTableName="join_table"
+                                 constraintName="fk_join_table__xyz_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="xyz"/>
+    </changeSet>
+</databaseChangeLog>

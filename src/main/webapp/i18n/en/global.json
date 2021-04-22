@@ -8,6 +8,8 @@
       "entities": {
         "main": "Entities",
         "abc": "Abc",
+        "xyz": "Xyz",
+        "joinTable": "Join Table",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

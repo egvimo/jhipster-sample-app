@@ -20,6 +20,12 @@ entity Xyz {
     name String unique required
 }
 
-relationship OneToOne {
-    Abc{xyz} to Xyz
+entity JoinTable {
+    additionalColumn String required
+}
+
+relationship ManyToOne {
+    // ManyToMany relationship with additional columns
+    JoinTable{abc required} to Abc{xyz}
+    JoinTable{xyz required} to Xyz{abc}
 }
