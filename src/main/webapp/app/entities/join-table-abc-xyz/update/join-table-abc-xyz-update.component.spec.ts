@@ -46,10 +46,10 @@ describe('Component Tests', () => {
     describe('ngOnInit', () => {
       it('Should call Abc query and add missing value', () => {
         const joinTableAbcXyz: IJoinTableAbcXyz = { id: 456 };
-        const abc: IAbc = { id: 49273 };
+        const abc: IAbc = { id: 30878 };
         joinTableAbcXyz.abc = abc;
 
-        const abcCollection: IAbc[] = [{ id: 48434 }];
+        const abcCollection: IAbc[] = [{ id: 60408 }];
         spyOn(abcService, 'query').and.returnValue(of(new HttpResponse({ body: abcCollection })));
         const additionalAbcs = [abc];
         const expectedCollection: IAbc[] = [...additionalAbcs, ...abcCollection];
@@ -65,10 +65,10 @@ describe('Component Tests', () => {
 
       it('Should call Xyz query and add missing value', () => {
         const joinTableAbcXyz: IJoinTableAbcXyz = { id: 456 };
-        const xyz: IXyz = { id: 81673 };
+        const xyz: IXyz = { id: 92988 };
         joinTableAbcXyz.xyz = xyz;
 
-        const xyzCollection: IXyz[] = [{ id: 22696 }];
+        const xyzCollection: IXyz[] = [{ id: 14306 }];
         spyOn(xyzService, 'query').and.returnValue(of(new HttpResponse({ body: xyzCollection })));
         const additionalXyzs = [xyz];
         const expectedCollection: IXyz[] = [...additionalXyzs, ...xyzCollection];
@@ -84,9 +84,9 @@ describe('Component Tests', () => {
 
       it('Should update editForm', () => {
         const joinTableAbcXyz: IJoinTableAbcXyz = { id: 456 };
-        const abc: IAbc = { id: 7104 };
+        const abc: IAbc = { id: 82111 };
         joinTableAbcXyz.abc = abc;
-        const xyz: IXyz = { id: 78669 };
+        const xyz: IXyz = { id: 99825 };
         joinTableAbcXyz.xyz = xyz;
 
         activatedRoute.data = of({ joinTableAbcXyz });

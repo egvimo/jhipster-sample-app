@@ -33,14 +33,14 @@
     "reactive": false,
     "clientTheme": "none",
     "clientThemeVariant": "",
-    "entities": ["Abc", "Xyz", "JoinTable", "JoinTableAbcXyz"],
+    "entities": ["Abc", "Xyz", "JoinTableAbcXyz"],
     "skipCheckLengthOfIdentifier": false,
     "skipFakeData": false,
     "blueprints": [],
     "otherModules": [],
     "pages": [],
     "nativeLanguage": "en",
-    "creationTimestamp": 1619077911741,
-    "lastLiquibaseTimestamp": 1619078493000
+    "creationTimestamp": 1619078656090,
+    "lastLiquibaseTimestamp": 1619078836000
   }
 }

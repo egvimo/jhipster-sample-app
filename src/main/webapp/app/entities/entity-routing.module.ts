@@ -15,11 +15,6 @@ import { RouterModule } from '@angular/router';
         loadChildren: () => import('./xyz/xyz.module').then(m => m.XyzModule),
       },
       {
-        path: 'join-table',
-        data: { pageTitle: 'sampleApp.joinTable.home.title' },
-        loadChildren: () => import('./join-table/join-table.module').then(m => m.JoinTableModule),
-      },
-      {
         path: 'join-table-abc-xyz',
         data: { pageTitle: 'sampleApp.joinTableAbcXyz.home.title' },
         loadChildren: () => import('./join-table-abc-xyz/join-table-abc-xyz.module').then(m => m.JoinTableAbcXyzModule),

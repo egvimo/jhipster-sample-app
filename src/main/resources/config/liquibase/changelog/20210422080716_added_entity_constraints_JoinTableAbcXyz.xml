@@ -6,7 +6,7 @@
     <!--
         Added the constraints for entity JoinTableAbcXyz.
     -->
-    <changeSet id="20210422080133-2" author="jhipster">
+    <changeSet id="20210422080716-2" author="jhipster">
 
         <addForeignKeyConstraint baseColumnNames="abc_id"
                                  baseTableName="join_table_abc_xyz"
