@@ -1,0 +1,44 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <div *ngIf="joinTableAbcXyz">
+      <h2 data-cy="joinTableAbcXyzDetailsHeading"><span jhiTranslate="sampleApp.joinTableAbcXyz.detail.title">Join Table Abc Xyz</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ joinTableAbcXyz.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="sampleApp.joinTableAbcXyz.additionalColumn">Additional Column</span></dt>
+        <dd>
+          <span>{{ joinTableAbcXyz.additionalColumn }}</span>
+        </dd>
+        <dt><span jhiTranslate="sampleApp.joinTableAbcXyz.abc">Abc</span></dt>
+        <dd>
+          <div *ngIf="joinTableAbcXyz.abc">
+            <a [routerLink]="['/abc', joinTableAbcXyz.abc?.id, 'view']">{{ joinTableAbcXyz.abc?.id }}</a>
+          </div>
+        </dd>
+        <dt><span jhiTranslate="sampleApp.joinTableAbcXyz.xyz">Xyz</span></dt>
+        <dd>
+          <div *ngIf="joinTableAbcXyz.xyz">
+            <a [routerLink]="['/xyz', joinTableAbcXyz.xyz?.id, 'view']">{{ joinTableAbcXyz.xyz?.id }}</a>
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/join-table-abc-xyz', joinTableAbcXyz.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

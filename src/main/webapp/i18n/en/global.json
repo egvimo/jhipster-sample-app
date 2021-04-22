@@ -10,6 +10,7 @@
         "abc": "Abc",
         "xyz": "Xyz",
         "joinTable": "Join Table",
+        "joinTableAbcXyz": "Join Table Abc Xyz",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

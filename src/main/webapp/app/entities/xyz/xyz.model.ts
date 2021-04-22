@@ -1,13 +1,13 @@
-import { IJoinTable } from 'app/entities/join-table/join-table.model';
+import { IJoinTableAbcXyz } from 'app/entities/join-table-abc-xyz/join-table-abc-xyz.model';
 
 export interface IXyz {
   id?: number;
   name?: string;
-  abcs?: IJoinTable[] | null;
+  abcs?: IJoinTableAbcXyz[] | null;
 }
 
 export class Xyz implements IXyz {
-  constructor(public id?: number, public name?: string, public abcs?: IJoinTable[] | null) {}
+  constructor(public id?: number, public name?: string, public abcs?: IJoinTableAbcXyz[] | null) {}
 }
 
 export function getXyzIdentifier(xyz: IXyz): number | undefined {

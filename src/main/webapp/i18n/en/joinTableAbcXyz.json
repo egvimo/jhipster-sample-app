@@ -1,0 +1,26 @@
+{
+  "sampleApp": {
+    "joinTableAbcXyz": {
+      "home": {
+        "title": "Join Table Abc Xyzs",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Join Table Abc Xyz",
+        "createOrEditLabel": "Create or edit a Join Table Abc Xyz",
+        "notFound": "No Join Table Abc Xyzs found"
+      },
+      "created": "A new Join Table Abc Xyz is created with identifier {{ param }}",
+      "updated": "A Join Table Abc Xyz is updated with identifier {{ param }}",
+      "deleted": "A Join Table Abc Xyz is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Join Table Abc Xyz {{ id }}?"
+      },
+      "detail": {
+        "title": "Join Table Abc Xyz"
+      },
+      "id": "ID",
+      "additionalColumn": "Additional Column",
+      "abc": "Abc",
+      "xyz": "Xyz"
+    }
+  }
+}

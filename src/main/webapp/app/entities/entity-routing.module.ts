@@ -19,6 +19,11 @@ import { RouterModule } from '@angular/router';
         data: { pageTitle: 'sampleApp.joinTable.home.title' },
         loadChildren: () => import('./join-table/join-table.module').then(m => m.JoinTableModule),
       },
+      {
+        path: 'join-table-abc-xyz',
+        data: { pageTitle: 'sampleApp.joinTableAbcXyz.home.title' },
+        loadChildren: () => import('./join-table-abc-xyz/join-table-abc-xyz.module').then(m => m.JoinTableAbcXyzModule),
+      },
       /* jhipster-needle-add-entity-route - JHipster will add entity modules routes here */
     ]),
   ],

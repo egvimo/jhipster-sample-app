@@ -10,7 +10,7 @@
   "relationships": [
     {
       "relationshipType": "one-to-many",
-      "otherEntityName": "joinTable",
+      "otherEntityName": "joinTableAbcXyz",
       "otherEntityRelationshipName": "abc",
       "relationshipName": "xyz"
     }

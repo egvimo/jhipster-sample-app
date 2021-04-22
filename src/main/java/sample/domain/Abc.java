@@ -31,7 +31,7 @@ public class Abc implements Serializable {
     @OneToMany(mappedBy = "abc")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @JsonIgnoreProperties(value = { "abc", "xyz" }, allowSetters = true)
-    private Set<JoinTable> xyzs = new HashSet<>();
+    private Set<JoinTableAbcXyz> xyzs = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
@@ -60,35 +60,35 @@ public class Abc implements Serializable {
         this.name = name;
     }
 
-    public Set<JoinTable> getXyzs() {
+    public Set<JoinTableAbcXyz> getXyzs() {
         return this.xyzs;
     }
 
-    public Abc xyzs(Set<JoinTable> joinTables) {
-        this.setXyzs(joinTables);
+    public Abc xyzs(Set<JoinTableAbcXyz> joinTableAbcXyzs) {
+        this.setXyzs(joinTableAbcXyzs);
         return this;
     }
 
-    public Abc addXyz(JoinTable joinTable) {
-        this.xyzs.add(joinTable);
-        joinTable.setAbc(this);
+    public Abc addXyz(JoinTableAbcXyz joinTableAbcXyz) {
+        this.xyzs.add(joinTableAbcXyz);
+        joinTableAbcXyz.setAbc(this);
         return this;
     }
 
-    public Abc removeXyz(JoinTable joinTable) {
-        this.xyzs.remove(joinTable);
-        joinTable.setAbc(null);
+    public Abc removeXyz(JoinTableAbcXyz joinTableAbcXyz) {
+        this.xyzs.remove(joinTableAbcXyz);
+        joinTableAbcXyz.setAbc(null);
         return this;
     }
 
-    public void setXyzs(Set<JoinTable> joinTables) {
+    public void setXyzs(Set<JoinTableAbcXyz> joinTableAbcXyzs) {
         if (this.xyzs != null) {
             this.xyzs.forEach(i -> i.setAbc(null));
         }
-        if (joinTables != null) {
-            joinTables.forEach(i -> i.setAbc(this));
+        if (joinTableAbcXyzs != null) {
+            joinTableAbcXyzs.forEach(i -> i.setAbc(this));
         }
-        this.xyzs = joinTables;
+        this.xyzs = joinTableAbcXyzs;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here

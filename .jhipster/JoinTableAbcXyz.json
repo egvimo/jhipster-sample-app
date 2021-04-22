@@ -1,0 +1,36 @@
+{
+  "name": "JoinTableAbcXyz",
+  "fields": [
+    {
+      "fieldName": "additionalColumn",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "abc",
+      "otherEntityRelationshipName": "xyz",
+      "relationshipValidateRules": "required",
+      "relationshipName": "abc"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "xyz",
+      "otherEntityRelationshipName": "abc",
+      "relationshipValidateRules": "required",
+      "relationshipName": "xyz"
+    }
+  ],
+  "entityTableName": "join_table_abc_xyz",
+  "dto": "no",
+  "pagination": "no",
+  "service": "no",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "applications": ["sample"],
+  "changelogDate": "20210422080133"
+}
