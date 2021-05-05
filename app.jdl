@@ -8,24 +8,12 @@ application {
         clientFramework angularX
         prodDatabaseType postgresql
         devDatabaseType postgresql
+        testFrameworks [protractor]
     }
     entities *
 }
 
 entity Abc {
     name String unique required
-}
-
-entity Xyz {
-    name String unique required
-}
-
-entity JoinTable {
-    additionalColumn String required
-}
-
-relationship ManyToOne {
-    // ManyToMany relationship with additional columns
-    JoinTable{abc required} to Abc{xyz}
-    JoinTable{xyz required} to Xyz{abc}
+    myFieldWithValidation String minlength(4) maxlength(4)
 }

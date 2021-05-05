@@ -1,13 +1,11 @@
-import { IJoinTable } from 'app/entities/join-table/join-table.model';
-
 export interface IAbc {
   id?: number;
   name?: string;
-  xyzs?: IJoinTable[] | null;
+  myFieldWithValidation?: string | null;
 }
 
 export class Abc implements IAbc {
-  constructor(public id?: number, public name?: string, public xyzs?: IJoinTable[] | null) {}
+  constructor(public id?: number, public name?: string, public myFieldWithValidation?: string | null) {}
 }
 
 export function getAbcIdentifier(abc: IAbc): number | undefined {

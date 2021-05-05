@@ -23,6 +23,7 @@ describe('Service Tests', () => {
       elemDefault = {
         id: 0,
         name: 'AAAAAAA',
+        myFieldWithValidation: 'AAAAAAA',
       };
     });
 
@@ -59,6 +60,7 @@ describe('Service Tests', () => {
           {
             id: 1,
             name: 'BBBBBB',
+            myFieldWithValidation: 'BBBBBB',
           },
           elemDefault
         );
@@ -96,6 +98,7 @@ describe('Service Tests', () => {
           {
             id: 1,
             name: 'BBBBBB',
+            myFieldWithValidation: 'BBBBBB',
           },
           elemDefault
         );
@@ -147,7 +150,7 @@ describe('Service Tests', () => {
         });
 
         it('should add only unique Abc to an array', () => {
-          const abcArray: IAbc[] = [{ id: 123 }, { id: 456 }, { id: 44999 }];
+          const abcArray: IAbc[] = [{ id: 123 }, { id: 456 }, { id: 30878 }];
           const abcCollection: IAbc[] = [{ id: 123 }];
           expectedResult = service.addAbcToCollectionIfMissing(abcCollection, ...abcArray);
           expect(expectedResult).toHaveLength(3);

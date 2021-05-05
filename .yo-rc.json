@@ -20,7 +20,7 @@
     "prodDatabaseType": "postgresql",
     "searchEngine": false,
     "skipClient": false,
-    "testFrameworks": [],
+    "testFrameworks": ["protractor"],
     "websocket": false,
     "packageName": "sample",
     "packageFolder": "sample",
@@ -33,14 +33,14 @@
     "reactive": false,
     "clientTheme": "none",
     "clientThemeVariant": "",
-    "entities": ["Abc", "Xyz", "JoinTable"],
+    "entities": ["Abc"],
     "skipCheckLengthOfIdentifier": false,
     "skipFakeData": false,
     "blueprints": [],
     "otherModules": [],
     "pages": [],
     "nativeLanguage": "en",
-    "creationTimestamp": 1619077911741,
-    "lastLiquibaseTimestamp": 1619078091000
+    "creationTimestamp": 1620206655431,
+    "lastLiquibaseTimestamp": 1620206715000
   }
 }

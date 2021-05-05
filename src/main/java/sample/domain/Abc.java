@@ -1,9 +1,6 @@
 package sample.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import org.hibernate.annotations.Cache;
@@ -28,10 +25,9 @@ public class Abc implements Serializable {
     @Column(name = "name", nullable = false, unique = true)
     private String name;
 
-    @OneToMany(mappedBy = "abc")
-    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @JsonIgnoreProperties(value = { "abc", "xyz" }, allowSetters = true)
-    private Set<JoinTable> xyzs = new HashSet<>();
+    @Size(min = 4, max = 4)
+    @Column(name = "my_field_with_validation", length = 4)
+    private String myFieldWithValidation;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
@@ -60,35 +56,17 @@ public class Abc implements Serializable {
         this.name = name;
     }
 
-    public Set<JoinTable> getXyzs() {
-        return this.xyzs;
+    public String getMyFieldWithValidation() {
+        return this.myFieldWithValidation;
     }
 
-    public Abc xyzs(Set<JoinTable> joinTables) {
-        this.setXyzs(joinTables);
+    public Abc myFieldWithValidation(String myFieldWithValidation) {
+        this.myFieldWithValidation = myFieldWithValidation;
         return this;
     }
 
-    public Abc addXyz(JoinTable joinTable) {
-        this.xyzs.add(joinTable);
-        joinTable.setAbc(this);
-        return this;
-    }
-
-    public Abc removeXyz(JoinTable joinTable) {
-        this.xyzs.remove(joinTable);
-        joinTable.setAbc(null);
-        return this;
-    }
-
-    public void setXyzs(Set<JoinTable> joinTables) {
-        if (this.xyzs != null) {
-            this.xyzs.forEach(i -> i.setAbc(null));
-        }
-        if (joinTables != null) {
-            joinTables.forEach(i -> i.setAbc(this));
-        }
-        this.xyzs = joinTables;
+    public void setMyFieldWithValidation(String myFieldWithValidation) {
+        this.myFieldWithValidation = myFieldWithValidation;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
@@ -116,6 +94,7 @@ public class Abc implements Serializable {
         return "Abc{" +
             "id=" + getId() +
             ", name='" + getName() + "'" +
+            ", myFieldWithValidation='" + getMyFieldWithValidation() + "'" +
             "}";
     }
 }

@@ -5,16 +5,16 @@
       "fieldName": "name",
       "fieldType": "String",
       "fieldValidateRules": ["unique", "required"]
-    }
-  ],
-  "relationships": [
+    },
     {
-      "relationshipType": "one-to-many",
-      "otherEntityName": "joinTable",
-      "otherEntityRelationshipName": "abc",
-      "relationshipName": "xyz"
+      "fieldName": "myFieldWithValidation",
+      "fieldType": "String",
+      "fieldValidateRules": ["minlength", "maxlength"],
+      "fieldValidateRulesMinlength": "4",
+      "fieldValidateRulesMaxlength": "4"
     }
   ],
+  "relationships": [],
   "entityTableName": "abc",
   "dto": "no",
   "pagination": "no",
@@ -24,5 +24,5 @@
   "readOnly": false,
   "embedded": false,
   "applications": ["sample"],
-  "changelogDate": "20210422075251"
+  "changelogDate": "20210505092515"
 }

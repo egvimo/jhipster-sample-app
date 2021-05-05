@@ -125,6 +125,9 @@ public class AbcResource {
                     if (abc.getName() != null) {
                         existingAbc.setName(abc.getName());
                     }
+                    if (abc.getMyFieldWithValidation() != null) {
+                        existingAbc.setMyFieldWithValidation(abc.getMyFieldWithValidation());
+                    }
 
                     return existingAbc;
                 }
