@@ -22,3 +22,7 @@ entity Xyz {
     uniqueField String unique required
     anotherField String
 }
+
+relationship ManyToMany {
+    Abc{xyz(name)} to Xyz{abc(name)}
+}
