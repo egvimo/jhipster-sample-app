@@ -19,7 +19,7 @@
       },
       "id": "ID",
       "name": "Name",
-      "myFieldWithValidation": "My Field With Validation"
+      "otherField": "Other Field"
     }
   }
 }

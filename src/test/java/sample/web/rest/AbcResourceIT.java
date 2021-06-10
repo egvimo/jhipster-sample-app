@@ -33,8 +33,8 @@ class AbcResourceIT {
     private static final String DEFAULT_NAME = "AAAAAAAAAA";
     private static final String UPDATED_NAME = "BBBBBBBBBB";
 
-    private static final String DEFAULT_MY_FIELD_WITH_VALIDATION = "AAAA";
-    private static final String UPDATED_MY_FIELD_WITH_VALIDATION = "BBBB";
+    private static final String DEFAULT_OTHER_FIELD = "AAAAAAAAAA";
+    private static final String UPDATED_OTHER_FIELD = "BBBBBBBBBB";
 
     private static final String ENTITY_API_URL = "/api/abcs";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
@@ -60,7 +60,7 @@ class AbcResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Abc createEntity(EntityManager em) {
-        Abc abc = new Abc().name(DEFAULT_NAME).myFieldWithValidation(DEFAULT_MY_FIELD_WITH_VALIDATION);
+        Abc abc = new Abc().name(DEFAULT_NAME).otherField(DEFAULT_OTHER_FIELD);
         return abc;
     }
 
@@ -71,7 +71,7 @@ class AbcResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Abc createUpdatedEntity(EntityManager em) {
-        Abc abc = new Abc().name(UPDATED_NAME).myFieldWithValidation(UPDATED_MY_FIELD_WITH_VALIDATION);
+        Abc abc = new Abc().name(UPDATED_NAME).otherField(UPDATED_OTHER_FIELD);
         return abc;
     }
 
@@ -96,7 +96,7 @@ class AbcResourceIT {
         assertThat(abcList).hasSize(databaseSizeBeforeCreate + 1);
         Abc testAbc = abcList.get(abcList.size() - 1);
         assertThat(testAbc.getName()).isEqualTo(DEFAULT_NAME);
-        assertThat(testAbc.getMyFieldWithValidation()).isEqualTo(DEFAULT_MY_FIELD_WITH_VALIDATION);
+        assertThat(testAbc.getOtherField()).isEqualTo(DEFAULT_OTHER_FIELD);
     }
 
     @Test
@@ -151,7 +151,7 @@ class AbcResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(abc.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
-            .andExpect(jsonPath("$.[*].myFieldWithValidation").value(hasItem(DEFAULT_MY_FIELD_WITH_VALIDATION)));
+            .andExpect(jsonPath("$.[*].otherField").value(hasItem(DEFAULT_OTHER_FIELD)));
     }
 
     @Test
@@ -167,7 +167,7 @@ class AbcResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(abc.getId().intValue()))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
-            .andExpect(jsonPath("$.myFieldWithValidation").value(DEFAULT_MY_FIELD_WITH_VALIDATION));
+            .andExpect(jsonPath("$.otherField").value(DEFAULT_OTHER_FIELD));
     }
 
     @Test
@@ -189,7 +189,7 @@ class AbcResourceIT {
         Abc updatedAbc = abcRepository.findById(abc.getId()).get();
         // Disconnect from session so that the updates on updatedAbc are not directly saved in db
         em.detach(updatedAbc);
-        updatedAbc.name(UPDATED_NAME).myFieldWithValidation(UPDATED_MY_FIELD_WITH_VALIDATION);
+        updatedAbc.name(UPDATED_NAME).otherField(UPDATED_OTHER_FIELD);
 
         restAbcMockMvc
             .perform(
@@ -205,7 +205,7 @@ class AbcResourceIT {
         assertThat(abcList).hasSize(databaseSizeBeforeUpdate);
         Abc testAbc = abcList.get(abcList.size() - 1);
         assertThat(testAbc.getName()).isEqualTo(UPDATED_NAME);
-        assertThat(testAbc.getMyFieldWithValidation()).isEqualTo(UPDATED_MY_FIELD_WITH_VALIDATION);
+        assertThat(testAbc.getOtherField()).isEqualTo(UPDATED_OTHER_FIELD);
     }
 
     @Test
@@ -296,7 +296,7 @@ class AbcResourceIT {
         assertThat(abcList).hasSize(databaseSizeBeforeUpdate);
         Abc testAbc = abcList.get(abcList.size() - 1);
         assertThat(testAbc.getName()).isEqualTo(UPDATED_NAME);
-        assertThat(testAbc.getMyFieldWithValidation()).isEqualTo(DEFAULT_MY_FIELD_WITH_VALIDATION);
+        assertThat(testAbc.getOtherField()).isEqualTo(DEFAULT_OTHER_FIELD);
     }
 
     @Test
@@ -311,7 +311,7 @@ class AbcResourceIT {
         Abc partialUpdatedAbc = new Abc();
         partialUpdatedAbc.setId(abc.getId());
 
-        partialUpdatedAbc.name(UPDATED_NAME).myFieldWithValidation(UPDATED_MY_FIELD_WITH_VALIDATION);
+        partialUpdatedAbc.name(UPDATED_NAME).otherField(UPDATED_OTHER_FIELD);
 
         restAbcMockMvc
             .perform(
@@ -327,7 +327,7 @@ class AbcResourceIT {
         assertThat(abcList).hasSize(databaseSizeBeforeUpdate);
         Abc testAbc = abcList.get(abcList.size() - 1);
         assertThat(testAbc.getName()).isEqualTo(UPDATED_NAME);
-        assertThat(testAbc.getMyFieldWithValidation()).isEqualTo(UPDATED_MY_FIELD_WITH_VALIDATION);
+        assertThat(testAbc.getOtherField()).isEqualTo(UPDATED_OTHER_FIELD);
     }
 
     @Test

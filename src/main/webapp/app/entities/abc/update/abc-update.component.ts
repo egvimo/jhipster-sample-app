@@ -18,7 +18,7 @@ export class AbcUpdateComponent implements OnInit {
   editForm = this.fb.group({
     id: [],
     name: [null, [Validators.required]],
-    myFieldWithValidation: [null, [Validators.minLength(4), Validators.maxLength(4)]],
+    otherField: [],
   });
 
   constructor(protected abcService: AbcService, protected activatedRoute: ActivatedRoute, protected fb: FormBuilder) {}
@@ -66,7 +66,7 @@ export class AbcUpdateComponent implements OnInit {
     this.editForm.patchValue({
       id: abc.id,
       name: abc.name,
-      myFieldWithValidation: abc.myFieldWithValidation,
+      otherField: abc.otherField,
     });
   }
 
@@ -75,7 +75,7 @@ export class AbcUpdateComponent implements OnInit {
       ...new Abc(),
       id: this.editForm.get(['id'])!.value,
       name: this.editForm.get(['name'])!.value,
-      myFieldWithValidation: this.editForm.get(['myFieldWithValidation'])!.value,
+      otherField: this.editForm.get(['otherField'])!.value,
     };
   }
 }

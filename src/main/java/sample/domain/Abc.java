@@ -25,9 +25,8 @@ public class Abc implements Serializable {
     @Column(name = "name", nullable = false, unique = true)
     private String name;
 
-    @Size(min = 4, max = 4)
-    @Column(name = "my_field_with_validation", length = 4)
-    private String myFieldWithValidation;
+    @Column(name = "other_field")
+    private String otherField;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
@@ -56,17 +55,17 @@ public class Abc implements Serializable {
         this.name = name;
     }
 
-    public String getMyFieldWithValidation() {
-        return this.myFieldWithValidation;
+    public String getOtherField() {
+        return this.otherField;
     }
 
-    public Abc myFieldWithValidation(String myFieldWithValidation) {
-        this.myFieldWithValidation = myFieldWithValidation;
+    public Abc otherField(String otherField) {
+        this.otherField = otherField;
         return this;
     }
 
-    public void setMyFieldWithValidation(String myFieldWithValidation) {
-        this.myFieldWithValidation = myFieldWithValidation;
+    public void setOtherField(String otherField) {
+        this.otherField = otherField;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
@@ -94,7 +93,7 @@ public class Abc implements Serializable {
         return "Abc{" +
             "id=" + getId() +
             ", name='" + getName() + "'" +
-            ", myFieldWithValidation='" + getMyFieldWithValidation() + "'" +
+            ", otherField='" + getOtherField() + "'" +
             "}";
     }
 }

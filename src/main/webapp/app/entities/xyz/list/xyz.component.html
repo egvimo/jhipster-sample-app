@@ -1,0 +1,70 @@
+<div>
+  <h2 id="page-heading" data-cy="XyzHeading">
+    <span jhiTranslate="sampleApp.xyz.home.title">Xyzs</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info mr-2" (click)="loadAll()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span jhiTranslate="sampleApp.xyz.home.refreshListLabel">Refresh List</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-xyz"
+        [routerLink]="['/xyz/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="sampleApp.xyz.home.createLabel"> Create a new Xyz </span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <div class="alert alert-warning" id="no-result" *ngIf="xyzs?.length === 0">
+    <span jhiTranslate="sampleApp.xyz.home.notFound">No xyzs found</span>
+  </div>
+
+  <div class="table-responsive" id="entities" *ngIf="xyzs && xyzs.length > 0">
+    <table class="table table-striped" aria-describedby="page-heading">
+      <thead>
+        <tr>
+          <th scope="col"><span jhiTranslate="global.field.id">ID</span></th>
+          <th scope="col"><span jhiTranslate="sampleApp.xyz.uniqueField">Unique Field</span></th>
+          <th scope="col"><span jhiTranslate="sampleApp.xyz.anotherField">Another Field</span></th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let xyz of xyzs; trackBy: trackId" data-cy="entityTable">
+          <td>
+            <a [routerLink]="['/xyz', xyz.id, 'view']">{{ xyz.id }}</a>
+          </td>
+          <td>{{ xyz.uniqueField }}</td>
+          <td>{{ xyz.anotherField }}</td>
+          <td class="text-right">
+            <div class="btn-group">
+              <button type="submit" [routerLink]="['/xyz', xyz.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
+                <fa-icon icon="eye"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+              </button>
+
+              <button type="submit" [routerLink]="['/xyz', xyz.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
+                <fa-icon icon="pencil-alt"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+              </button>
+
+              <button type="submit" (click)="delete(xyz)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                <fa-icon icon="times"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -8,7 +8,6 @@
     "strict": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
-    "skipLibCheck": true,
     "outDir": "build/resources/main/static/app",
     "lib": ["es2018", "dom"],
     "baseUrl": "./",
@@ -25,5 +24,6 @@
     "strictTemplates": true,
     "strictInputAccessModifiers": true,
     "preserveWhitespaces": true
-  }
+  },
+  "exclude": ["src/test/javascript/cypress"]
 }

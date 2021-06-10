@@ -8,12 +8,17 @@ application {
         clientFramework angularX
         prodDatabaseType postgresql
         devDatabaseType postgresql
-        testFrameworks [protractor]
+        testFrameworks [cypress]
     }
     entities *
 }
 
 entity Abc {
     name String unique required
-    myFieldWithValidation String minlength(4) maxlength(4)
+    otherField String
+}
+
+entity Xyz {
+    uniqueField String unique required
+    anotherField String
 }

@@ -34,7 +34,7 @@
         <tr>
           <th scope="col"><span jhiTranslate="global.field.id">ID</span></th>
           <th scope="col"><span jhiTranslate="sampleApp.abc.name">Name</span></th>
-          <th scope="col"><span jhiTranslate="sampleApp.abc.myFieldWithValidation">My Field With Validation</span></th>
+          <th scope="col"><span jhiTranslate="sampleApp.abc.otherField">Other Field</span></th>
           <th scope="col"></th>
         </tr>
       </thead>
@@ -44,7 +44,7 @@
             <a [routerLink]="['/abc', abc.id, 'view']">{{ abc.id }}</a>
           </td>
           <td>{{ abc.name }}</td>
-          <td>{{ abc.myFieldWithValidation }}</td>
+          <td>{{ abc.otherField }}</td>
           <td class="text-right">
             <div class="btn-group">
               <button type="submit" [routerLink]="['/abc', abc.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">

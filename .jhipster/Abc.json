@@ -7,11 +7,8 @@
       "fieldValidateRules": ["unique", "required"]
     },
     {
-      "fieldName": "myFieldWithValidation",
-      "fieldType": "String",
-      "fieldValidateRules": ["minlength", "maxlength"],
-      "fieldValidateRulesMinlength": "4",
-      "fieldValidateRulesMaxlength": "4"
+      "fieldName": "otherField",
+      "fieldType": "String"
     }
   ],
   "relationships": [],
@@ -24,5 +21,6 @@
   "readOnly": false,
   "embedded": false,
   "applications": ["sample"],
-  "changelogDate": "20210505092515"
+  "changelogDate": "20210505092515",
+  "incrementalChangelog": false
 }

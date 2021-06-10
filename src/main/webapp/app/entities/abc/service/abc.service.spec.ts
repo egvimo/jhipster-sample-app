@@ -23,7 +23,7 @@ describe('Service Tests', () => {
       elemDefault = {
         id: 0,
         name: 'AAAAAAA',
-        myFieldWithValidation: 'AAAAAAA',
+        otherField: 'AAAAAAA',
       };
     });
 
@@ -60,7 +60,7 @@ describe('Service Tests', () => {
           {
             id: 1,
             name: 'BBBBBB',
-            myFieldWithValidation: 'BBBBBB',
+            otherField: 'BBBBBB',
           },
           elemDefault
         );
@@ -98,7 +98,7 @@ describe('Service Tests', () => {
           {
             id: 1,
             name: 'BBBBBB',
-            myFieldWithValidation: 'BBBBBB',
+            otherField: 'BBBBBB',
           },
           elemDefault
         );

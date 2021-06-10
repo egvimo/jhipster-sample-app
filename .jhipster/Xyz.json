@@ -1,0 +1,26 @@
+{
+  "name": "Xyz",
+  "fields": [
+    {
+      "fieldName": "uniqueField",
+      "fieldType": "String",
+      "fieldValidateRules": ["unique", "required"]
+    },
+    {
+      "fieldName": "anotherField",
+      "fieldType": "String"
+    }
+  ],
+  "relationships": [],
+  "entityTableName": "xyz",
+  "dto": "no",
+  "pagination": "no",
+  "service": "no",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "applications": ["sample"],
+  "changelogDate": "20210610135657",
+  "incrementalChangelog": true
+}
