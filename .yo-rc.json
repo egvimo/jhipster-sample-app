@@ -25,7 +25,7 @@
     "packageName": "sample",
     "packageFolder": "sample",
     "applicationType": "monolith",
-    "jhipsterVersion": "7.0.1",
+    "jhipsterVersion": "7.1.0",
     "skipServer": false,
     "clientPackageManager": "npm",
     "dtoSuffix": "DTO",
@@ -33,15 +33,17 @@
     "reactive": false,
     "clientTheme": "none",
     "clientThemeVariant": "",
+    "applicationIndex": 0,
     "entities": ["Abc", "Xyz"],
+    "incrementalChangelog": true,
     "skipCheckLengthOfIdentifier": false,
     "skipFakeData": false,
     "blueprints": [],
     "otherModules": [],
     "pages": [],
     "nativeLanguage": "en",
-    "creationTimestamp": 1620206655431,
-    "lastLiquibaseTimestamp": 1623333418000,
-    "incrementalChangelog": true
+    "creationTimestamp": 1628492024876,
+    "devServerPort": 4200,
+    "lastLiquibaseTimestamp": 1628492144000
   }
 }

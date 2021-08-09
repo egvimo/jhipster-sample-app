@@ -75,7 +75,12 @@ describe('Service Tests', () => {
       });
 
       it('should partial update a Xyz', () => {
-        const patchObject = Object.assign({}, new Xyz());
+        const patchObject = Object.assign(
+          {
+            uniqueField: 'BBBBBB',
+          },
+          new Xyz()
+        );
 
         const returnedFromService = Object.assign(patchObject, elemDefault);
 
@@ -145,7 +150,7 @@ describe('Service Tests', () => {
         });
 
         it('should add only unique Xyz to an array', () => {
-          const xyzArray: IXyz[] = [{ id: 123 }, { id: 456 }, { id: 92988 }];
+          const xyzArray: IXyz[] = [{ id: 123 }, { id: 456 }, { id: 30180 }];
           const xyzCollection: IXyz[] = [{ id: 123 }];
           expectedResult = service.addXyzToCollectionIfMissing(xyzCollection, ...xyzArray);
           expect(expectedResult).toHaveLength(3);
@@ -165,6 +170,12 @@ describe('Service Tests', () => {
           expectedResult = service.addXyzToCollectionIfMissing([], null, xyz, undefined);
           expect(expectedResult).toHaveLength(1);
           expect(expectedResult).toContain(xyz);
+        });
+
+        it('should return initial array if no Xyz is added', () => {
+          const xyzCollection: IXyz[] = [{ id: 123 }];
+          expectedResult = service.addXyzToCollectionIfMissing(xyzCollection, undefined, null);
+          expect(expectedResult).toEqual(xyzCollection);
         });
       });
     });

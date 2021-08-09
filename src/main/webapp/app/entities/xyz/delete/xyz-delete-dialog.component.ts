@@ -10,7 +10,7 @@ import { XyzService } from '../service/xyz.service';
 export class XyzDeleteDialogComponent {
   xyz?: IXyz;
 
-  constructor(protected xyzService: XyzService, public activeModal: NgbActiveModal) {}
+  constructor(protected xyzService: XyzService, protected activeModal: NgbActiveModal) {}
 
   cancel(): void {
     this.activeModal.dismiss();

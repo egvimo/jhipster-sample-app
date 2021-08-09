@@ -280,7 +280,7 @@ class AbcResourceIT {
         Abc partialUpdatedAbc = new Abc();
         partialUpdatedAbc.setId(abc.getId());
 
-        partialUpdatedAbc.name(UPDATED_NAME);
+        partialUpdatedAbc.name(UPDATED_NAME).otherField(UPDATED_OTHER_FIELD);
 
         restAbcMockMvc
             .perform(
@@ -296,7 +296,7 @@ class AbcResourceIT {
         assertThat(abcList).hasSize(databaseSizeBeforeUpdate);
         Abc testAbc = abcList.get(abcList.size() - 1);
         assertThat(testAbc.getName()).isEqualTo(UPDATED_NAME);
-        assertThat(testAbc.getOtherField()).isEqualTo(DEFAULT_OTHER_FIELD);
+        assertThat(testAbc.getOtherField()).isEqualTo(UPDATED_OTHER_FIELD);
     }
 
     @Test

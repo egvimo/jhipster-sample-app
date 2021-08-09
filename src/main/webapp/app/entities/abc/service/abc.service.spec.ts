@@ -77,7 +77,7 @@ describe('Service Tests', () => {
       it('should partial update a Abc', () => {
         const patchObject = Object.assign(
           {
-            name: 'BBBBBB',
+            otherField: 'BBBBBB',
           },
           new Abc()
         );
@@ -150,7 +150,7 @@ describe('Service Tests', () => {
         });
 
         it('should add only unique Abc to an array', () => {
-          const abcArray: IAbc[] = [{ id: 123 }, { id: 456 }, { id: 30878 }];
+          const abcArray: IAbc[] = [{ id: 123 }, { id: 456 }, { id: 29084 }];
           const abcCollection: IAbc[] = [{ id: 123 }];
           expectedResult = service.addAbcToCollectionIfMissing(abcCollection, ...abcArray);
           expect(expectedResult).toHaveLength(3);
@@ -170,6 +170,12 @@ describe('Service Tests', () => {
           expectedResult = service.addAbcToCollectionIfMissing([], null, abc, undefined);
           expect(expectedResult).toHaveLength(1);
           expect(expectedResult).toContain(abc);
+        });
+
+        it('should return initial array if no Abc is added', () => {
+          const abcCollection: IAbc[] = [{ id: 123 }];
+          expectedResult = service.addAbcToCollectionIfMissing(abcCollection, undefined, null);
+          expect(expectedResult).toEqual(abcCollection);
         });
       });
     });
