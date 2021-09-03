@@ -34,7 +34,7 @@
     "clientTheme": "none",
     "clientThemeVariant": "",
     "applicationIndex": 0,
-    "entities": ["Abc", "Xyz"],
+    "entities": ["Abc", "Xyz", "Def"],
     "incrementalChangelog": true,
     "skipCheckLengthOfIdentifier": false,
     "skipFakeData": false,
@@ -44,6 +44,6 @@
     "nativeLanguage": "en",
     "creationTimestamp": 1628492024876,
     "devServerPort": 4200,
-    "lastLiquibaseTimestamp": 1628492144000
+    "lastLiquibaseTimestamp": 1630663744000
   }
 }

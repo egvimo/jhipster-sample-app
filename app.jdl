@@ -23,6 +23,10 @@ entity Xyz {
     anotherField String
 }
 
-relationship ManyToMany {
-    Abc{xyz(uniqueField)} to Xyz{abc(name)}
+entity Def {
+    name String
+}
+
+relationship ManyToOne {
+    Def{xyz(uniqueField)} to Xyz
 }
