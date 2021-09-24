@@ -103,7 +103,7 @@ public class XyzResource {
      * or with status {@code 500 (Internal Server Error)} if the xyz couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PatchMapping(value = "/xyzs/{id}", consumes = "application/merge-patch+json")
+    @PatchMapping(value = "/xyzs/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<Xyz> partialUpdateXyz(@PathVariable(value = "id", required = false) final Long id, @NotNull @RequestBody Xyz xyz)
         throws URISyntaxException {
         log.debug("REST request to partial update Xyz partially : {}, {}", id, xyz);
@@ -120,18 +120,16 @@ public class XyzResource {
 
         Optional<Xyz> result = xyzRepository
             .findById(xyz.getId())
-            .map(
-                existingXyz -> {
-                    if (xyz.getUniqueField() != null) {
-                        existingXyz.setUniqueField(xyz.getUniqueField());
-                    }
-                    if (xyz.getAnotherField() != null) {
-                        existingXyz.setAnotherField(xyz.getAnotherField());
-                    }
-
-                    return existingXyz;
+            .map(existingXyz -> {
+                if (xyz.getUniqueField() != null) {
+                    existingXyz.setUniqueField(xyz.getUniqueField());
                 }
-            )
+                if (xyz.getAnotherField() != null) {
+                    existingXyz.setAnotherField(xyz.getAnotherField());
+                }
+
+                return existingXyz;
+            })
             .map(xyzRepository::save);
 
         return ResponseUtil.wrapOrNotFound(

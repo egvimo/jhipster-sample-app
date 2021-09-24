@@ -103,7 +103,7 @@ public class AbcResource {
      * or with status {@code 500 (Internal Server Error)} if the abc couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PatchMapping(value = "/abcs/{id}", consumes = "application/merge-patch+json")
+    @PatchMapping(value = "/abcs/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<Abc> partialUpdateAbc(@PathVariable(value = "id", required = false) final Long id, @NotNull @RequestBody Abc abc)
         throws URISyntaxException {
         log.debug("REST request to partial update Abc partially : {}, {}", id, abc);
@@ -120,18 +120,16 @@ public class AbcResource {
 
         Optional<Abc> result = abcRepository
             .findById(abc.getId())
-            .map(
-                existingAbc -> {
-                    if (abc.getName() != null) {
-                        existingAbc.setName(abc.getName());
-                    }
-                    if (abc.getOtherField() != null) {
-                        existingAbc.setOtherField(abc.getOtherField());
-                    }
-
-                    return existingAbc;
+            .map(existingAbc -> {
+                if (abc.getName() != null) {
+                    existingAbc.setName(abc.getName());
                 }
-            )
+                if (abc.getOtherField() != null) {
+                    existingAbc.setOtherField(abc.getOtherField());
+                }
+
+                return existingAbc;
+            })
             .map(abcRepository::save);
 
         return ResponseUtil.wrapOrNotFound(

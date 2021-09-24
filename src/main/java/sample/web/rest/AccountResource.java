@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import sample.service.UserService;
 import sample.service.dto.AdminUserDTO;
-import sample.service.dto.UserDTO;
 
 /**
  * REST controller for managing the current user's account.

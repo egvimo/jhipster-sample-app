@@ -21,6 +21,6 @@
   "readOnly": false,
   "embedded": false,
   "applications": ["sample"],
-  "changelogDate": "20210809065544",
+  "changelogDate": "20210924113440",
   "incrementalChangelog": true
 }

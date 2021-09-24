@@ -19,6 +19,7 @@ public class Xyz implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
     @SequenceGenerator(name = "sequenceGenerator")
+    @Column(name = "id")
     private Long id;
 
     @NotNull
@@ -29,17 +30,18 @@ public class Xyz implements Serializable {
     private String anotherField;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
+
     public Long getId() {
-        return id;
+        return this.id;
+    }
+
+    public Xyz id(Long id) {
+        this.setId(id);
+        return this;
     }
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Xyz id(Long id) {
-        this.id = id;
-        return this;
     }
 
     public String getUniqueField() {
@@ -47,7 +49,7 @@ public class Xyz implements Serializable {
     }
 
     public Xyz uniqueField(String uniqueField) {
-        this.uniqueField = uniqueField;
+        this.setUniqueField(uniqueField);
         return this;
     }
 
@@ -60,7 +62,7 @@ public class Xyz implements Serializable {
     }
 
     public Xyz anotherField(String anotherField) {
-        this.anotherField = anotherField;
+        this.setAnotherField(anotherField);
         return this;
     }
 

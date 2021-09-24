@@ -10,7 +10,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,9 +22,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.web.client.RestTemplate;
 import sample.IntegrationTest;
-import sample.SampleApp;
-import sample.config.TestSecurityConfiguration;
 import sample.security.AuthoritiesConstants;
+import sample.security.SecurityUtils;
 
 @IntegrationTest
 class CustomClaimConverterIT {
@@ -100,5 +98,47 @@ class CustomClaimConverterIT {
 
         // WHEN
         assertThatCode(() -> customClaimConverter.convert(claims)).doesNotThrowAnyException();
+    }
+
+    @Test
+    void testConvert_withNamespacedRoles() {
+        // GIVEN
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("sub", "123");
+        // AND
+        ObjectNode user = mapper.createObjectNode();
+        user.put("preferred_username", USERNAME);
+        user.put("given_name", NAME);
+        user.put("family_name", FAMILY_NAME);
+        user.putArray(SecurityUtils.CLAIMS_NAMESPACE + "roles").add(AuthoritiesConstants.ADMIN).add(AuthoritiesConstants.USER);
+        mockHttpGetUserInfo(user);
+
+        // WHEN
+        Map<String, Object> convertedClaims = customClaimConverter.convert(claims);
+
+        // THEN
+        assertThat(convertedClaims)
+            .containsEntry("sub", "123")
+            .containsEntry("preferred_username", USERNAME)
+            .containsEntry("given_name", NAME)
+            .containsEntry("family_name", FAMILY_NAME)
+            .containsEntry("roles", Arrays.asList(AuthoritiesConstants.ADMIN, AuthoritiesConstants.USER));
+    }
+
+    @Test
+    void testConvert_withoutFirstAndLastName() {
+        // GIVEN
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("sub", "123");
+        // AND
+        ObjectNode user = mapper.createObjectNode();
+        user.put("preferred_username", USERNAME);
+        mockHttpGetUserInfo(user);
+
+        assertThatCode(() -> {
+                Map<String, Object> convertedClaims = customClaimConverter.convert(claims);
+                assertThat(convertedClaims).containsEntry("preferred_username", USERNAME).doesNotContainKeys("given_name", "family_name");
+            })
+            .doesNotThrowAnyException();
     }
 }

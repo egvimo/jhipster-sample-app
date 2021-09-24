@@ -19,6 +19,7 @@ public class Abc implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
     @SequenceGenerator(name = "sequenceGenerator")
+    @Column(name = "id")
     private Long id;
 
     @NotNull
@@ -29,17 +30,18 @@ public class Abc implements Serializable {
     private String otherField;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
+
     public Long getId() {
-        return id;
+        return this.id;
+    }
+
+    public Abc id(Long id) {
+        this.setId(id);
+        return this;
     }
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Abc id(Long id) {
-        this.id = id;
-        return this;
     }
 
     public String getName() {
@@ -47,7 +49,7 @@ public class Abc implements Serializable {
     }
 
     public Abc name(String name) {
-        this.name = name;
+        this.setName(name);
         return this;
     }
 
@@ -60,7 +62,7 @@ public class Abc implements Serializable {
     }
 
     public Abc otherField(String otherField) {
-        this.otherField = otherField;
+        this.setOtherField(otherField);
         return this;
     }
 

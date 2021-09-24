@@ -22,10 +22,12 @@
     "skipClient": false,
     "testFrameworks": ["cypress"],
     "websocket": false,
+    "enableGradleEnterprise": false,
+    "gradleEnterpriseHost": "",
     "packageName": "sample",
     "packageFolder": "sample",
     "applicationType": "monolith",
-    "jhipsterVersion": "7.1.0",
+    "jhipsterVersion": "7.2.0",
     "skipServer": false,
     "clientPackageManager": "npm",
     "dtoSuffix": "DTO",
@@ -34,7 +36,7 @@
     "clientTheme": "none",
     "clientThemeVariant": "",
     "applicationIndex": 0,
-    "entities": ["Abc", "Xyz", "Def"],
+    "entities": ["Abc", "Xyz"],
     "incrementalChangelog": true,
     "skipCheckLengthOfIdentifier": false,
     "skipFakeData": false,
@@ -42,8 +44,8 @@
     "otherModules": [],
     "pages": [],
     "nativeLanguage": "en",
-    "creationTimestamp": 1628492024876,
+    "creationTimestamp": 1632483160103,
     "devServerPort": 4200,
-    "lastLiquibaseTimestamp": 1630663744000
+    "lastLiquibaseTimestamp": 1632483280000
   }
 }

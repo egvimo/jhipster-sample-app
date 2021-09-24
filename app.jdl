@@ -22,11 +22,3 @@ entity Xyz {
     uniqueField String unique required
     anotherField String
 }
-
-entity Def {
-    name String
-}
-
-relationship ManyToOne {
-    Def{xyz(uniqueField)} to Xyz
-}

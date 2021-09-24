@@ -28,9 +28,7 @@ describe('Abc e2e test', () => {
   });
 
   afterEach(() => {
-    cy.get('@oauth2Data').then(oauth2Data => {
-      cy.oauthLogout(oauth2Data);
-    });
+    cy.oauthLogout();
     cy.clearCache();
   });
 
