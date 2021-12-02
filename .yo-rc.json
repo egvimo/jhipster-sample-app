@@ -19,7 +19,6 @@
     "messageBroker": false,
     "prodDatabaseType": "postgresql",
     "searchEngine": false,
-    "skipClient": false,
     "testFrameworks": ["cypress"],
     "websocket": false,
     "enableGradleEnterprise": false,
@@ -27,8 +26,7 @@
     "packageName": "sample",
     "packageFolder": "sample",
     "applicationType": "monolith",
-    "jhipsterVersion": "7.2.0",
-    "skipServer": false,
+    "jhipsterVersion": "7.4.0",
     "clientPackageManager": "npm",
     "dtoSuffix": "DTO",
     "entitySuffix": "",
@@ -44,8 +42,8 @@
     "otherModules": [],
     "pages": [],
     "nativeLanguage": "en",
-    "creationTimestamp": 1632483160103,
+    "creationTimestamp": 1638435644098,
     "devServerPort": 4200,
-    "lastLiquibaseTimestamp": 1632483280000
+    "lastLiquibaseTimestamp": 1638435764000
   }
 }

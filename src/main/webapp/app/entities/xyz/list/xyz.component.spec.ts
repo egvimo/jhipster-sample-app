@@ -7,42 +7,40 @@ import { XyzService } from '../service/xyz.service';
 
 import { XyzComponent } from './xyz.component';
 
-describe('Component Tests', () => {
-  describe('Xyz Management Component', () => {
-    let comp: XyzComponent;
-    let fixture: ComponentFixture<XyzComponent>;
-    let service: XyzService;
+describe('Xyz Management Component', () => {
+  let comp: XyzComponent;
+  let fixture: ComponentFixture<XyzComponent>;
+  let service: XyzService;
 
-    beforeEach(() => {
-      TestBed.configureTestingModule({
-        imports: [HttpClientTestingModule],
-        declarations: [XyzComponent],
-      })
-        .overrideTemplate(XyzComponent, '')
-        .compileComponents();
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule],
+      declarations: [XyzComponent],
+    })
+      .overrideTemplate(XyzComponent, '')
+      .compileComponents();
 
-      fixture = TestBed.createComponent(XyzComponent);
-      comp = fixture.componentInstance;
-      service = TestBed.inject(XyzService);
+    fixture = TestBed.createComponent(XyzComponent);
+    comp = fixture.componentInstance;
+    service = TestBed.inject(XyzService);
 
-      const headers = new HttpHeaders().append('link', 'link;link');
-      jest.spyOn(service, 'query').mockReturnValue(
-        of(
-          new HttpResponse({
-            body: [{ id: 123 }],
-            headers,
-          })
-        )
-      );
-    });
+    const headers = new HttpHeaders();
+    jest.spyOn(service, 'query').mockReturnValue(
+      of(
+        new HttpResponse({
+          body: [{ id: 123 }],
+          headers,
+        })
+      )
+    );
+  });
 
-    it('Should call load all on init', () => {
-      // WHEN
-      comp.ngOnInit();
+  it('Should call load all on init', () => {
+    // WHEN
+    comp.ngOnInit();
 
-      // THEN
-      expect(service.query).toHaveBeenCalled();
-      expect(comp.xyzs?.[0]).toEqual(expect.objectContaining({ id: 123 }));
-    });
+    // THEN
+    expect(service.query).toHaveBeenCalled();
+    expect(comp.xyzs?.[0]).toEqual(expect.objectContaining({ id: 123 }));
   });
 });

@@ -16,6 +16,9 @@ describe('Abc e2e test', () => {
   const abcPageUrlPattern = new RegExp('/abc(\\?.*)?$');
   const username = Cypress.env('E2E_USERNAME') ?? 'admin';
   const password = Cypress.env('E2E_PASSWORD') ?? 'admin';
+  const abcSample = { name: 'Ecuador Shoes' };
+
+  let abc: any;
 
   beforeEach(() => {
     cy.getOauth2Data();
@@ -27,9 +30,8 @@ describe('Abc e2e test', () => {
     cy.get(entityItemSelector).should('exist');
   });
 
-  afterEach(() => {
-    cy.oauthLogout();
-    cy.clearCache();
+  beforeEach(() => {
+    Cypress.Cookies.preserveOnce('XSRF-TOKEN', 'JSESSIONID');
   });
 
   beforeEach(() => {
@@ -38,11 +40,27 @@ describe('Abc e2e test', () => {
     cy.intercept('DELETE', '/api/abcs/*').as('deleteEntityRequest');
   });
 
-  it('should load Abcs', () => {
+  afterEach(() => {
+    if (abc) {
+      cy.authenticatedRequest({
+        method: 'DELETE',
+        url: `/api/abcs/${abc.id}`,
+      }).then(() => {
+        abc = undefined;
+      });
+    }
+  });
+
+  afterEach(() => {
+    cy.oauthLogout();
+    cy.clearCache();
+  });
+
+  it('Abcs menu should load Abcs page', () => {
     cy.visit('/');
     cy.clickOnEntityMenuItem('abc');
     cy.wait('@entitiesRequest').then(({ response }) => {
-      if (response.body.length === 0) {
+      if (response!.body.length === 0) {
         cy.get(entityTableSelector).should('not.exist');
       } else {
         cy.get(entityTableSelector).should('exist');
@@ -52,91 +70,113 @@ describe('Abc e2e test', () => {
     cy.url().should('match', abcPageUrlPattern);
   });
 
-  it('should load details Abc page', function () {
-    cy.visit(abcPageUrl);
-    cy.wait('@entitiesRequest').then(({ response }) => {
-      if (response.body.length === 0) {
-        this.skip();
-      }
-    });
-    cy.get(entityDetailsButtonSelector).first().click({ force: true });
-    cy.getEntityDetailsHeading('abc');
-    cy.get(entityDetailsBackButtonSelector).click({ force: true });
-    cy.wait('@entitiesRequest').then(({ response }) => {
-      expect(response.statusCode).to.equal(200);
-    });
-    cy.url().should('match', abcPageUrlPattern);
-  });
+  describe('Abc page', () => {
+    describe('create button click', () => {
+      beforeEach(() => {
+        cy.visit(abcPageUrl);
+        cy.wait('@entitiesRequest');
+      });
 
-  it('should load create Abc page', () => {
-    cy.visit(abcPageUrl);
-    cy.wait('@entitiesRequest');
-    cy.get(entityCreateButtonSelector).click({ force: true });
-    cy.getEntityCreateUpdateHeading('Abc');
-    cy.get(entityCreateSaveButtonSelector).should('exist');
-    cy.get(entityCreateCancelButtonSelector).click({ force: true });
-    cy.wait('@entitiesRequest').then(({ response }) => {
-      expect(response.statusCode).to.equal(200);
+      it('should load create Abc page', () => {
+        cy.get(entityCreateButtonSelector).click({ force: true });
+        cy.url().should('match', new RegExp('/abc/new$'));
+        cy.getEntityCreateUpdateHeading('Abc');
+        cy.get(entityCreateSaveButtonSelector).should('exist');
+        cy.get(entityCreateCancelButtonSelector).click({ force: true });
+        cy.wait('@entitiesRequest').then(({ response }) => {
+          expect(response!.statusCode).to.equal(200);
+        });
+        cy.url().should('match', abcPageUrlPattern);
+      });
     });
-    cy.url().should('match', abcPageUrlPattern);
-  });
 
-  it('should load edit Abc page', function () {
-    cy.visit(abcPageUrl);
-    cy.wait('@entitiesRequest').then(({ response }) => {
-      if (response.body.length === 0) {
-        this.skip();
-      }
-    });
-    cy.get(entityEditButtonSelector).first().click({ force: true });
-    cy.getEntityCreateUpdateHeading('Abc');
-    cy.get(entityCreateSaveButtonSelector).should('exist');
-    cy.get(entityCreateCancelButtonSelector).click({ force: true });
-    cy.wait('@entitiesRequest').then(({ response }) => {
-      expect(response.statusCode).to.equal(200);
-    });
-    cy.url().should('match', abcPageUrlPattern);
-  });
+    describe('with existing value', () => {
+      beforeEach(() => {
+        cy.authenticatedRequest({
+          method: 'POST',
+          url: '/api/abcs',
+          body: abcSample,
+        }).then(({ body }) => {
+          abc = body;
 
-  it('should create an instance of Abc', () => {
-    cy.visit(abcPageUrl);
-    cy.get(entityCreateButtonSelector).click({ force: true });
-    cy.getEntityCreateUpdateHeading('Abc');
+          cy.intercept(
+            {
+              method: 'GET',
+              url: '/api/abcs+(?*|)',
+              times: 1,
+            },
+            {
+              statusCode: 200,
+              body: [abc],
+            }
+          ).as('entitiesRequestInternal');
+        });
 
-    cy.get(`[data-cy="name"]`).type('Loan Verde').should('have.value', 'Loan Verde');
+        cy.visit(abcPageUrl);
 
-    cy.get(`[data-cy="otherField"]`).type('Account Industrial collaborative').should('have.value', 'Account Industrial collaborative');
+        cy.wait('@entitiesRequestInternal');
+      });
 
-    cy.get(entityCreateSaveButtonSelector).click({ force: true });
-    cy.scrollTo('top', { ensureScrollable: false });
-    cy.get(entityCreateSaveButtonSelector).should('not.exist');
-    cy.wait('@postEntityRequest').then(({ response }) => {
-      expect(response.statusCode).to.equal(201);
-    });
-    cy.wait('@entitiesRequest').then(({ response }) => {
-      expect(response.statusCode).to.equal(200);
-    });
-    cy.url().should('match', abcPageUrlPattern);
-  });
+      it('detail button click should load details Abc page', () => {
+        cy.get(entityDetailsButtonSelector).first().click();
+        cy.getEntityDetailsHeading('abc');
+        cy.get(entityDetailsBackButtonSelector).click({ force: true });
+        cy.wait('@entitiesRequest').then(({ response }) => {
+          expect(response!.statusCode).to.equal(200);
+        });
+        cy.url().should('match', abcPageUrlPattern);
+      });
 
-  it('should delete last instance of Abc', function () {
-    cy.visit(abcPageUrl);
-    cy.wait('@entitiesRequest').then(({ response }) => {
-      if (response.body.length > 0) {
-        cy.get(entityTableSelector).should('have.lengthOf', response.body.length);
-        cy.get(entityDeleteButtonSelector).last().click({ force: true });
+      it('edit button click should load edit Abc page', () => {
+        cy.get(entityEditButtonSelector).first().click();
+        cy.getEntityCreateUpdateHeading('Abc');
+        cy.get(entityCreateSaveButtonSelector).should('exist');
+        cy.get(entityCreateCancelButtonSelector).click({ force: true });
+        cy.wait('@entitiesRequest').then(({ response }) => {
+          expect(response!.statusCode).to.equal(200);
+        });
+        cy.url().should('match', abcPageUrlPattern);
+      });
+
+      it('last delete button click should delete instance of Abc', () => {
+        cy.get(entityDeleteButtonSelector).last().click();
         cy.getEntityDeleteDialogHeading('abc').should('exist');
         cy.get(entityConfirmDeleteButtonSelector).click({ force: true });
         cy.wait('@deleteEntityRequest').then(({ response }) => {
-          expect(response.statusCode).to.equal(204);
+          expect(response!.statusCode).to.equal(204);
         });
         cy.wait('@entitiesRequest').then(({ response }) => {
-          expect(response.statusCode).to.equal(200);
+          expect(response!.statusCode).to.equal(200);
         });
         cy.url().should('match', abcPageUrlPattern);
-      } else {
-        this.skip();
-      }
+
+        abc = undefined;
+      });
+    });
+  });
+
+  describe('new Abc page', () => {
+    beforeEach(() => {
+      cy.visit(`${abcPageUrl}`);
+      cy.get(entityCreateButtonSelector).click({ force: true });
+      cy.getEntityCreateUpdateHeading('Abc');
+    });
+
+    it('should create an instance of Abc', () => {
+      cy.get(`[data-cy="name"]`).type('Loan Verde').should('have.value', 'Loan Verde');
+
+      cy.get(`[data-cy="otherField"]`).type('Account Industrial collaborative').should('have.value', 'Account Industrial collaborative');
+
+      cy.get(entityCreateSaveButtonSelector).click();
+
+      cy.wait('@postEntityRequest').then(({ response }) => {
+        expect(response!.statusCode).to.equal(201);
+        abc = response!.body;
+      });
+      cy.wait('@entitiesRequest').then(({ response }) => {
+        expect(response!.statusCode).to.equal(200);
+      });
+      cy.url().should('match', abcPageUrlPattern);
     });
   });
 });

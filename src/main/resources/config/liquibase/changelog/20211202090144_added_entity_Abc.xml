@@ -3,21 +3,21 @@
     xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
     xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.4.xsd
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd
                         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
     <!--
-        Added the entity Xyz.
+        Added the entity Abc.
     -->
-    <changeSet id="20210924113440-1" author="jhipster">
-        <createTable tableName="xyz">
+    <changeSet id="20211202090144-1" author="jhipster">
+        <createTable tableName="abc">
             <column name="id" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="unique_field" type="varchar(255)">
-                <constraints nullable="false" unique="true" uniqueConstraintName="ux_xyz__unique_field" />
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false" unique="true" uniqueConstraintName="ux_abc__name" />
             </column>
-            <column name="another_field" type="varchar(255)">
+            <column name="other_field" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
@@ -34,15 +34,15 @@
           This can be customized by adding or removing 'faker' in the 'spring.liquibase.contexts'
           Spring Boot configuration key.
     -->
-    <changeSet id="20210924113440-1-data" author="jhipster" context="faker">
+    <changeSet id="20211202090144-1-data" author="jhipster" context="faker">
         <loadData
-                  file="config/liquibase/fake-data/20210924113440_entity_xyz.csv"
+                  file="config/liquibase/fake-data/20211202090144_entity_abc.csv"
                   separator=";"
-                  tableName="xyz"
+                  tableName="abc"
                   usePreparedStatements="true">
             <column name="id" type="numeric"/>
-            <column name="unique_field" type="string"/>
-            <column name="another_field" type="string"/>
+            <column name="name" type="string"/>
+            <column name="other_field" type="string"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>
     </changeSet>
