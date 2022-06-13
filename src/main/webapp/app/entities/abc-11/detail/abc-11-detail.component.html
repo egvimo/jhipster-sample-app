@@ -1,0 +1,36 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="abc11">
+      <h2 data-cy="abc11DetailsHeading"><span jhiTranslate="sampleApp.abc11.detail.title">Abc 11</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ abc11.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="sampleApp.abc11.name">Name</span></dt>
+        <dd>
+          <span>{{ abc11.name }}</span>
+        </dd>
+        <dt><span jhiTranslate="sampleApp.abc11.otherField">Other Field</span></dt>
+        <dd>
+          <span>{{ abc11.otherField }}</span>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/abc-11', abc11.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

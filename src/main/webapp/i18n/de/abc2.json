@@ -1,0 +1,25 @@
+{
+  "sampleApp": {
+    "abc2": {
+      "home": {
+        "title": "Abc 2 S",
+        "refreshListLabel": "Liste aktualisieren",
+        "createLabel": "Abc 2 erstellen",
+        "createOrEditLabel": "Abc 2 erstellen oder bearbeiten",
+        "notFound": "Keine Abc 2 S gefunden"
+      },
+      "created": "Abc 2 erstellt mit ID {{ param }}",
+      "updated": "Abc 2 aktualisiert mit ID {{ param }}",
+      "deleted": "Abc 2 gelöscht mit ID {{ param }}",
+      "delete": {
+        "question": "Soll Abc 2 {{ id }} wirklich dauerhaft gelöscht werden?"
+      },
+      "detail": {
+        "title": "Abc 2"
+      },
+      "id": "ID",
+      "name": "Name",
+      "otherField": "Other Field"
+    }
+  }
+}

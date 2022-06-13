@@ -1,0 +1,26 @@
+{
+  "applications": ["sample"],
+  "changelogDate": "20220613183728",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "abc_0",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String",
+      "fieldValidateRules": ["unique", "required"]
+    },
+    {
+      "fieldName": "otherField",
+      "fieldType": "String"
+    }
+  ],
+  "fluentMethods": true,
+  "incrementalChangelog": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Abc0",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [],
+  "service": "no"
+}

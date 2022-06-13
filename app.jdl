@@ -22,12 +22,152 @@ application {
     entities *
 }
 
-entity Abc {
+entity Abc0 {
     name String unique required
     otherField String
 }
 
-entity Xyz {
-    uniqueField String unique required
-    anotherField String
+entity Abc1 {
+    name String unique required
+    otherField String
+}
+
+entity Abc2 {
+    name String unique required
+    otherField String
+}
+
+entity Abc3 {
+    name String unique required
+    otherField String
+}
+
+entity Abc4 {
+    name String unique required
+    otherField String
+}
+
+entity Abc5 {
+    name String unique required
+    otherField String
+}
+
+entity Abc6 {
+    name String unique required
+    otherField String
+}
+
+entity Abc7 {
+    name String unique required
+    otherField String
+}
+
+entity Abc8 {
+    name String unique required
+    otherField String
+}
+
+entity Abc9 {
+    name String unique required
+    otherField String
+}
+
+entity Abc10 {
+    name String unique required
+    otherField String
+}
+
+entity Abc11 {
+    name String unique required
+    otherField String
+}
+
+entity Abc12 {
+    name String unique required
+    otherField String
+}
+
+entity Abc13 {
+    name String unique required
+    otherField String
+}
+
+entity Abc14 {
+    name String unique required
+    otherField String
+}
+
+entity Abc15 {
+    name String unique required
+    otherField String
+}
+
+entity Abc16 {
+    name String unique required
+    otherField String
+}
+
+entity Abc17 {
+    name String unique required
+    otherField String
+}
+
+entity Abc18 {
+    name String unique required
+    otherField String
+}
+
+entity Abc19 {
+    name String unique required
+    otherField String
+}
+
+entity Abc20 {
+    name String unique required
+    otherField String
+}
+
+entity Abc21 {
+    name String unique required
+    otherField String
+}
+
+entity Abc22 {
+    name String unique required
+    otherField String
+}
+
+entity Abc23 {
+    name String unique required
+    otherField String
+}
+
+entity Abc24 {
+    name String unique required
+    otherField String
+}
+
+entity Abc25 {
+    name String unique required
+    otherField String
+}
+
+entity Abc26 {
+    name String unique required
+    otherField String
+}
+
+entity Abc27 {
+    name String unique required
+    otherField String
+}
+
+entity Abc28 {
+    name String unique required
+    otherField String
+}
+
+entity Abc29 {
+    name String unique required
+    otherField String
 }

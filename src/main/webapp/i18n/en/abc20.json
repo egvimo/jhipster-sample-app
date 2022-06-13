@@ -1,0 +1,25 @@
+{
+  "sampleApp": {
+    "abc20": {
+      "home": {
+        "title": "Abc 20 S",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Abc 20",
+        "createOrEditLabel": "Create or edit a Abc 20",
+        "notFound": "No Abc 20 S found"
+      },
+      "created": "A new Abc 20 is created with identifier {{ param }}",
+      "updated": "A Abc 20 is updated with identifier {{ param }}",
+      "deleted": "A Abc 20 is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Abc 20 {{ id }}?"
+      },
+      "detail": {
+        "title": "Abc 20"
+      },
+      "id": "ID",
+      "name": "Name",
+      "otherField": "Other Field"
+    }
+  }
+}
