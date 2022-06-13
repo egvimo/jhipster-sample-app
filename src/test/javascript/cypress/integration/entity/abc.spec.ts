@@ -14,24 +14,14 @@ import {
 describe('Abc e2e test', () => {
   const abcPageUrl = '/abc';
   const abcPageUrlPattern = new RegExp('/abc(\\?.*)?$');
-  const username = Cypress.env('E2E_USERNAME') ?? 'admin';
-  const password = Cypress.env('E2E_PASSWORD') ?? 'admin';
-  const abcSample = { name: 'Ecuador Shoes' };
+  const username = Cypress.env('E2E_USERNAME') ?? 'user';
+  const password = Cypress.env('E2E_PASSWORD') ?? 'user';
+  const abcSample = { name: 'Frankreich Shoes' };
 
   let abc: any;
 
   beforeEach(() => {
-    cy.getOauth2Data();
-    cy.get('@oauth2Data').then(oauth2Data => {
-      cy.oauthLogin(oauth2Data, username, password);
-    });
-    cy.intercept('GET', '/api/abcs').as('entitiesRequest');
-    cy.visit('');
-    cy.get(entityItemSelector).should('exist');
-  });
-
-  beforeEach(() => {
-    Cypress.Cookies.preserveOnce('XSRF-TOKEN', 'JSESSIONID');
+    cy.login(username, password);
   });
 
   beforeEach(() => {
@@ -49,11 +39,6 @@ describe('Abc e2e test', () => {
         abc = undefined;
       });
     }
-  });
-
-  afterEach(() => {
-    cy.oauthLogout();
-    cy.clearCache();
   });
 
   it('Abcs menu should load Abcs page', () => {
@@ -78,11 +63,11 @@ describe('Abc e2e test', () => {
       });
 
       it('should load create Abc page', () => {
-        cy.get(entityCreateButtonSelector).click({ force: true });
+        cy.get(entityCreateButtonSelector).click();
         cy.url().should('match', new RegExp('/abc/new$'));
         cy.getEntityCreateUpdateHeading('Abc');
         cy.get(entityCreateSaveButtonSelector).should('exist');
-        cy.get(entityCreateCancelButtonSelector).click({ force: true });
+        cy.get(entityCreateCancelButtonSelector).click();
         cy.wait('@entitiesRequest').then(({ response }) => {
           expect(response!.statusCode).to.equal(200);
         });
@@ -120,7 +105,7 @@ describe('Abc e2e test', () => {
       it('detail button click should load details Abc page', () => {
         cy.get(entityDetailsButtonSelector).first().click();
         cy.getEntityDetailsHeading('abc');
-        cy.get(entityDetailsBackButtonSelector).click({ force: true });
+        cy.get(entityDetailsBackButtonSelector).click();
         cy.wait('@entitiesRequest').then(({ response }) => {
           expect(response!.statusCode).to.equal(200);
         });
@@ -131,7 +116,7 @@ describe('Abc e2e test', () => {
         cy.get(entityEditButtonSelector).first().click();
         cy.getEntityCreateUpdateHeading('Abc');
         cy.get(entityCreateSaveButtonSelector).should('exist');
-        cy.get(entityCreateCancelButtonSelector).click({ force: true });
+        cy.get(entityCreateCancelButtonSelector).click();
         cy.wait('@entitiesRequest').then(({ response }) => {
           expect(response!.statusCode).to.equal(200);
         });
@@ -141,7 +126,7 @@ describe('Abc e2e test', () => {
       it('last delete button click should delete instance of Abc', () => {
         cy.get(entityDeleteButtonSelector).last().click();
         cy.getEntityDeleteDialogHeading('abc').should('exist');
-        cy.get(entityConfirmDeleteButtonSelector).click({ force: true });
+        cy.get(entityConfirmDeleteButtonSelector).click();
         cy.wait('@deleteEntityRequest').then(({ response }) => {
           expect(response!.statusCode).to.equal(204);
         });
@@ -158,7 +143,7 @@ describe('Abc e2e test', () => {
   describe('new Abc page', () => {
     beforeEach(() => {
       cy.visit(`${abcPageUrl}`);
-      cy.get(entityCreateButtonSelector).click({ force: true });
+      cy.get(entityCreateButtonSelector).click();
       cy.getEntityCreateUpdateHeading('Abc');
     });
 

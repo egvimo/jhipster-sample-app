@@ -19,22 +19,22 @@ export class XyzComponent implements OnInit {
   loadAll(): void {
     this.isLoading = true;
 
-    this.xyzService.query().subscribe(
-      (res: HttpResponse<IXyz[]>) => {
+    this.xyzService.query().subscribe({
+      next: (res: HttpResponse<IXyz[]>) => {
         this.isLoading = false;
         this.xyzs = res.body ?? [];
       },
-      () => {
+      error: () => {
         this.isLoading = false;
-      }
-    );
+      },
+    });
   }
 
   ngOnInit(): void {
     this.loadAll();
   }
 
-  trackId(index: number, item: IXyz): number {
+  trackId(_index: number, item: IXyz): number {
     return item.id!;
   }
 

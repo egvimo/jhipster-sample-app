@@ -23,24 +23,22 @@ describe('MainComponent', () => {
     routerState = routerState;
   }
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [TranslateModule.forRoot()],
-        declarations: [MainComponent],
-        providers: [
-          Title,
-          AccountService,
-          {
-            provide: Router,
-            useClass: MockRouter,
-          },
-        ],
-      })
-        .overrideTemplate(MainComponent, '')
-        .compileComponents();
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [TranslateModule.forRoot()],
+      declarations: [MainComponent],
+      providers: [
+        Title,
+        AccountService,
+        {
+          provide: Router,
+          useClass: MockRouter,
+        },
+      ],
     })
-  );
+      .overrideTemplate(MainComponent, '')
+      .compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(MainComponent);
@@ -58,12 +56,12 @@ describe('MainComponent', () => {
     const childRoutePageTitle = 'childTitle';
     const navigationEnd = new NavigationEnd(1, '', '');
     const navigationStart = new NavigationStart(1, '');
-    const langChangeEvent: LangChangeEvent = { lang: 'en', translations: null };
+    const langChangeEvent: LangChangeEvent = { lang: 'de', translations: null };
 
     beforeEach(() => {
       routerState.snapshot.root = { data: {} };
       jest.spyOn(translateService, 'get').mockImplementation((key: string | string[]) => of(`${key as string} translated`));
-      translateService.currentLang = 'en';
+      translateService.currentLang = 'de';
       jest.spyOn(titleService, 'setTitle');
       comp.ngOnInit();
     });

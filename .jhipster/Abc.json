@@ -1,5 +1,9 @@
 {
-  "name": "Abc",
+  "applications": ["sample"],
+  "changelogDate": "20220613180728",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "abc",
   "fields": [
     {
       "fieldName": "name",
@@ -11,16 +15,12 @@
       "fieldType": "String"
     }
   ],
-  "relationships": [],
-  "entityTableName": "abc",
-  "dto": "no",
-  "pagination": "no",
-  "service": "no",
-  "jpaMetamodelFiltering": false,
   "fluentMethods": true,
+  "incrementalChangelog": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Abc",
+  "pagination": "no",
   "readOnly": false,
-  "embedded": false,
-  "applications": ["sample"],
-  "changelogDate": "20211202090144",
-  "incrementalChangelog": true
+  "relationships": [],
+  "service": "no"
 }

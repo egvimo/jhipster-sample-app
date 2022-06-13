@@ -19,22 +19,22 @@ export class AbcComponent implements OnInit {
   loadAll(): void {
     this.isLoading = true;
 
-    this.abcService.query().subscribe(
-      (res: HttpResponse<IAbc[]>) => {
+    this.abcService.query().subscribe({
+      next: (res: HttpResponse<IAbc[]>) => {
         this.isLoading = false;
         this.abcs = res.body ?? [];
       },
-      () => {
+      error: () => {
         this.isLoading = false;
-      }
-    );
+      },
+    });
   }
 
   ngOnInit(): void {
     this.loadAll();
   }
 
-  trackId(index: number, item: IAbc): number {
+  trackId(_index: number, item: IAbc): number {
     return item.id!;
   }
 

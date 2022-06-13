@@ -1,5 +1,4 @@
 jest.mock('app/core/auth/account.service');
-
 jest.mock('app/login/login.service');
 
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
@@ -27,16 +26,14 @@ describe('Home Component', () => {
     imageUrl: null,
   };
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        declarations: [HomeComponent],
-        providers: [AccountService, LoginService],
-      })
-        .overrideTemplate(HomeComponent, '')
-        .compileComponents();
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      declarations: [HomeComponent],
+      providers: [AccountService, LoginService],
     })
-  );
+      .overrideTemplate(HomeComponent, '')
+      .compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(HomeComponent);

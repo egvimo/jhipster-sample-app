@@ -1,5 +1,9 @@
 {
-  "name": "Xyz",
+  "applications": ["sample"],
+  "changelogDate": "20220613180828",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "xyz",
   "fields": [
     {
       "fieldName": "uniqueField",
@@ -11,16 +15,12 @@
       "fieldType": "String"
     }
   ],
-  "relationships": [],
-  "entityTableName": "xyz",
-  "dto": "no",
-  "pagination": "no",
-  "service": "no",
-  "jpaMetamodelFiltering": false,
   "fluentMethods": true,
+  "incrementalChangelog": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Xyz",
+  "pagination": "no",
   "readOnly": false,
-  "embedded": false,
-  "applications": ["sample"],
-  "changelogDate": "20211202090244",
-  "incrementalChangelog": true
+  "relationships": [],
+  "service": "no"
 }

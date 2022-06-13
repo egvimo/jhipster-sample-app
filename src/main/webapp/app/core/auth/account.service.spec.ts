@@ -1,16 +1,18 @@
-jest.mock('@angular/router');
-jest.mock('@ngx-translate/core');
 jest.mock('app/core/auth/state-storage.service');
+jest.mock('app/core/tracker/tracker.service');
 
 import { Router } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { of } from 'rxjs';
 import { NgxWebstorageModule, SessionStorageService } from 'ngx-webstorage';
 
 import { Account } from 'app/core/auth/account.model';
 import { Authority } from 'app/config/authority.constants';
 import { StateStorageService } from 'app/core/auth/state-storage.service';
+import { TrackerService } from 'app/core/tracker/tracker.service';
 
 import { AccountService } from './account.service';
 
@@ -32,20 +34,26 @@ describe('Account Service', () => {
   let httpMock: HttpTestingController;
   let mockStorageService: StateStorageService;
   let mockRouter: Router;
+  let mockTrackerService: TrackerService;
   let mockTranslateService: TranslateService;
   let sessionStorageService: SessionStorageService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, NgxWebstorageModule.forRoot()],
-      providers: [TranslateService, StateStorageService, Router],
+      imports: [HttpClientTestingModule, RouterTestingModule.withRoutes([]), TranslateModule.forRoot(), NgxWebstorageModule.forRoot()],
+      providers: [TrackerService, StateStorageService],
     });
 
     service = TestBed.inject(AccountService);
     httpMock = TestBed.inject(HttpTestingController);
     mockStorageService = TestBed.inject(StateStorageService);
     mockRouter = TestBed.inject(Router);
+    jest.spyOn(mockRouter, 'navigateByUrl').mockImplementation(() => Promise.resolve(true));
+
+    mockTrackerService = TestBed.inject(TrackerService);
+
     mockTranslateService = TestBed.inject(TranslateService);
+    jest.spyOn(mockTranslateService, 'use').mockImplementation(() => of(''));
     sessionStorageService = TestBed.inject(SessionStorageService);
   });
 
@@ -65,6 +73,8 @@ describe('Account Service', () => {
       // THEN
       expect(userIdentity).toBeNull();
       expect(service.isAuthenticated()).toBe(false);
+      expect(mockTrackerService.disconnect).toHaveBeenCalled();
+      expect(mockTrackerService.connect).not.toHaveBeenCalled();
     });
 
     it('authenticationState should emit the same account as was in input parameter', () => {
@@ -79,6 +89,8 @@ describe('Account Service', () => {
       // THEN
       expect(userIdentity).toEqual(expectedResult);
       expect(service.isAuthenticated()).toBe(true);
+      expect(mockTrackerService.connect).toHaveBeenCalled();
+      expect(mockTrackerService.disconnect).not.toHaveBeenCalled();
     });
   });
 

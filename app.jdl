@@ -5,10 +5,19 @@ application {
         applicationType monolith
         authenticationType oauth2
         buildTool gradle
+        cacheProvider ehcache
+        enableHibernateCache true
         clientFramework angularX
+        clientPackageManager npm
+        clientTheme none
+        databaseType sql
         prodDatabaseType postgresql
         devDatabaseType postgresql
+        messageBroker kafka
+        languages [de, en]
+        nativeLanguage de
         testFrameworks [cypress]
+        websocket spring-websocket
     }
     entities *
 }

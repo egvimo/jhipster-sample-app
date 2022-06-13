@@ -14,24 +14,14 @@ import {
 describe('Xyz e2e test', () => {
   const xyzPageUrl = '/xyz';
   const xyzPageUrlPattern = new RegExp('/xyz(\\?.*)?$');
-  const username = Cypress.env('E2E_USERNAME') ?? 'admin';
-  const password = Cypress.env('E2E_PASSWORD') ?? 'admin';
+  const username = Cypress.env('E2E_USERNAME') ?? 'user';
+  const password = Cypress.env('E2E_PASSWORD') ?? 'user';
   const xyzSample = { uniqueField: 'Rubber Fantastic Cotton' };
 
   let xyz: any;
 
   beforeEach(() => {
-    cy.getOauth2Data();
-    cy.get('@oauth2Data').then(oauth2Data => {
-      cy.oauthLogin(oauth2Data, username, password);
-    });
-    cy.intercept('GET', '/api/xyzs').as('entitiesRequest');
-    cy.visit('');
-    cy.get(entityItemSelector).should('exist');
-  });
-
-  beforeEach(() => {
-    Cypress.Cookies.preserveOnce('XSRF-TOKEN', 'JSESSIONID');
+    cy.login(username, password);
   });
 
   beforeEach(() => {
@@ -49,11 +39,6 @@ describe('Xyz e2e test', () => {
         xyz = undefined;
       });
     }
-  });
-
-  afterEach(() => {
-    cy.oauthLogout();
-    cy.clearCache();
   });
 
   it('Xyzs menu should load Xyzs page', () => {
@@ -78,11 +63,11 @@ describe('Xyz e2e test', () => {
       });
 
       it('should load create Xyz page', () => {
-        cy.get(entityCreateButtonSelector).click({ force: true });
+        cy.get(entityCreateButtonSelector).click();
         cy.url().should('match', new RegExp('/xyz/new$'));
         cy.getEntityCreateUpdateHeading('Xyz');
         cy.get(entityCreateSaveButtonSelector).should('exist');
-        cy.get(entityCreateCancelButtonSelector).click({ force: true });
+        cy.get(entityCreateCancelButtonSelector).click();
         cy.wait('@entitiesRequest').then(({ response }) => {
           expect(response!.statusCode).to.equal(200);
         });
@@ -120,7 +105,7 @@ describe('Xyz e2e test', () => {
       it('detail button click should load details Xyz page', () => {
         cy.get(entityDetailsButtonSelector).first().click();
         cy.getEntityDetailsHeading('xyz');
-        cy.get(entityDetailsBackButtonSelector).click({ force: true });
+        cy.get(entityDetailsBackButtonSelector).click();
         cy.wait('@entitiesRequest').then(({ response }) => {
           expect(response!.statusCode).to.equal(200);
         });
@@ -131,7 +116,7 @@ describe('Xyz e2e test', () => {
         cy.get(entityEditButtonSelector).first().click();
         cy.getEntityCreateUpdateHeading('Xyz');
         cy.get(entityCreateSaveButtonSelector).should('exist');
-        cy.get(entityCreateCancelButtonSelector).click({ force: true });
+        cy.get(entityCreateCancelButtonSelector).click();
         cy.wait('@entitiesRequest').then(({ response }) => {
           expect(response!.statusCode).to.equal(200);
         });
@@ -141,7 +126,7 @@ describe('Xyz e2e test', () => {
       it('last delete button click should delete instance of Xyz', () => {
         cy.get(entityDeleteButtonSelector).last().click();
         cy.getEntityDeleteDialogHeading('xyz').should('exist');
-        cy.get(entityConfirmDeleteButtonSelector).click({ force: true });
+        cy.get(entityConfirmDeleteButtonSelector).click();
         cy.wait('@deleteEntityRequest').then(({ response }) => {
           expect(response!.statusCode).to.equal(204);
         });
@@ -158,12 +143,12 @@ describe('Xyz e2e test', () => {
   describe('new Xyz page', () => {
     beforeEach(() => {
       cy.visit(`${xyzPageUrl}`);
-      cy.get(entityCreateButtonSelector).click({ force: true });
+      cy.get(entityCreateButtonSelector).click();
       cy.getEntityCreateUpdateHeading('Xyz');
     });
 
     it('should create an instance of Xyz', () => {
-      cy.get(`[data-cy="uniqueField"]`).type('multi-byte Zambia Principal').should('have.value', 'multi-byte Zambia Principal');
+      cy.get(`[data-cy="uniqueField"]`).type('multi-byte Republik Principal').should('have.value', 'multi-byte Republik Principal');
 
       cy.get(`[data-cy="anotherField"]`).type('Books Bedfordshire De-engineered').should('have.value', 'Books Bedfordshire De-engineered');
 
