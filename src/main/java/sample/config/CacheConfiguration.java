@@ -48,38 +48,7 @@ public class CacheConfiguration {
             createCache(cm, sample.domain.User.class.getName());
             createCache(cm, sample.domain.Authority.class.getName());
             createCache(cm, sample.domain.User.class.getName() + ".authorities");
-            createCache(cm, sample.domain.Abc.class.getName());
-            createCache(cm, sample.domain.Xyz.class.getName());
             createCache(cm, sample.domain.Abc0.class.getName());
-            createCache(cm, sample.domain.Abc1.class.getName());
-            createCache(cm, sample.domain.Abc2.class.getName());
-            createCache(cm, sample.domain.Abc3.class.getName());
-            createCache(cm, sample.domain.Abc4.class.getName());
-            createCache(cm, sample.domain.Abc5.class.getName());
-            createCache(cm, sample.domain.Abc6.class.getName());
-            createCache(cm, sample.domain.Abc7.class.getName());
-            createCache(cm, sample.domain.Abc8.class.getName());
-            createCache(cm, sample.domain.Abc9.class.getName());
-            createCache(cm, sample.domain.Abc10.class.getName());
-            createCache(cm, sample.domain.Abc11.class.getName());
-            createCache(cm, sample.domain.Abc12.class.getName());
-            createCache(cm, sample.domain.Abc13.class.getName());
-            createCache(cm, sample.domain.Abc14.class.getName());
-            createCache(cm, sample.domain.Abc15.class.getName());
-            createCache(cm, sample.domain.Abc16.class.getName());
-            createCache(cm, sample.domain.Abc17.class.getName());
-            createCache(cm, sample.domain.Abc18.class.getName());
-            createCache(cm, sample.domain.Abc19.class.getName());
-            createCache(cm, sample.domain.Abc20.class.getName());
-            createCache(cm, sample.domain.Abc21.class.getName());
-            createCache(cm, sample.domain.Abc22.class.getName());
-            createCache(cm, sample.domain.Abc23.class.getName());
-            createCache(cm, sample.domain.Abc24.class.getName());
-            createCache(cm, sample.domain.Abc25.class.getName());
-            createCache(cm, sample.domain.Abc26.class.getName());
-            createCache(cm, sample.domain.Abc27.class.getName());
-            createCache(cm, sample.domain.Abc28.class.getName());
-            createCache(cm, sample.domain.Abc29.class.getName());
             // jhipster-needle-ehcache-add-entry
         };
     }
