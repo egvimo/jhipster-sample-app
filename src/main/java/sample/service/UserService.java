@@ -122,12 +122,18 @@ public class UserService {
                 log.debug("Updating user '{}' in local database", user.getLogin());
                 updateUser(user.getFirstName(), user.getLastName(), user.getEmail(), user.getLangKey(), user.getImageUrl());
             }
+            addExistingDbAuthoritiesToUser(user, existingUser.get().getAuthorities());
         } else {
             log.debug("Saving user '{}' in local database", user.getLogin());
             userRepository.save(user);
             this.clearUserCaches(user);
         }
         return user;
+    }
+
+    private void addExistingDbAuthoritiesToUser(User user, Set<Authority> authorities) {
+        // TODO Remove method and call when infrastructure is ready
+        user.getAuthorities().addAll(authorities);
     }
 
     /**
