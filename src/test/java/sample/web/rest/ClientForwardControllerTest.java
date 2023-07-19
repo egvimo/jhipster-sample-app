@@ -57,21 +57,6 @@ class ClientForwardControllerTest {
         restMockMvc.perform(get("/foo/bar.js")).andExpect(status().isNotFound());
     }
 
-    @Test
-    void getWebsocketInfoEndpoint() throws Exception {
-        restMockMvc.perform(get("/websocket/info")).andExpect(status().isNotFound());
-    }
-
-    @Test
-    void getWebsocketEndpoint() throws Exception {
-        restMockMvc.perform(get("/websocket/tracker/308/sessionId/websocket")).andExpect(status().isNotFound());
-    }
-
-    @Test
-    void getWebsocketFallbackEndpoint() throws Exception {
-        restMockMvc.perform(get("/websocket/tracker/308/sessionId/xhr_streaming")).andExpect(status().isNotFound());
-    }
-
     @RestController
     public static class TestController {
 

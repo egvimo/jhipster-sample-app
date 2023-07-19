@@ -17,7 +17,6 @@ application {
         languages [de, en]
         nativeLanguage de
         testFrameworks [cypress]
-        websocket spring-websocket
     }
     entities *
 }

@@ -11,7 +11,7 @@
     "clientPackageManager": "npm",
     "clientTheme": "none",
     "clientThemeVariant": "",
-    "creationTimestamp": 1689768146786,
+    "creationTimestamp": 1689768441987,
     "databaseType": "sql",
     "devDatabaseType": "postgresql",
     "devServerPort": 4200,
@@ -27,7 +27,7 @@
     "jhiPrefix": "jhi",
     "jhipsterVersion": "7.9.3",
     "languages": ["de", "en"],
-    "lastLiquibaseTimestamp": 1689768206000,
+    "lastLiquibaseTimestamp": 1689768501000,
     "messageBroker": "kafka",
     "nativeLanguage": "de",
     "otherModules": [],
@@ -44,7 +44,7 @@
     "skipFakeData": false,
     "skipUserManagement": true,
     "testFrameworks": ["cypress"],
-    "websocket": "spring-websocket",
+    "websocket": false,
     "withAdminUi": true
   }
 }

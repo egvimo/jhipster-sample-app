@@ -233,13 +233,11 @@ dependencies {
     testImplementation "org.testcontainers:kafka"
     implementation "org.zalando:problem-spring-web"
     implementation "org.springframework.boot:spring-boot-starter-undertow"
-    implementation "org.springframework.boot:spring-boot-starter-websocket"
     implementation "org.springframework.boot:spring-boot-starter-oauth2-client"
     implementation "org.springframework.boot:spring-boot-starter-oauth2-resource-server"
     implementation "org.springframework.security:spring-security-data"
     implementation "io.micrometer:micrometer-registry-prometheus"
     implementation "io.dropwizard.metrics:metrics-core"
-    implementation "org.springframework.security:spring-security-messaging"
     liquibaseRuntime sourceSets.main.compileClasspath
     liquibaseRuntime "org.liquibase.ext:liquibase-hibernate5:${liquibaseHibernate5Version}"
     //jhipster-needle-gradle-dependency - JHipster will add additional dependencies here
