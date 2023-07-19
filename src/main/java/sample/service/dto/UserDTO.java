@@ -1,11 +1,14 @@
 package sample.service.dto;
 
+import java.io.Serializable;
 import sample.domain.User;
 
 /**
  * A DTO representing a user, with only the public attributes.
  */
-public class UserDTO {
+public class UserDTO implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private String id;
 

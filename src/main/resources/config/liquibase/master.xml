@@ -2,51 +2,16 @@
 <databaseChangeLog
     xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
-
-    <property name="now" value="now()" dbms="h2"/>
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
     <property name="now" value="current_timestamp" dbms="postgresql"/>
-    <property name="floatType" value="float4" dbms="postgresql, h2"/>
-    <property name="floatType" value="float" dbms="mysql, oracle, mssql, mariadb"/>
-    <property name="clobType" value="longvarchar" dbms="h2"/>
-    <property name="clobType" value="clob" dbms="mysql, oracle, mssql, mariadb, postgresql"/>
-    <property name="uuidType" value="uuid" dbms="h2, postgresql"/>
-    <property name="datetimeType" value="datetime(6)" dbms="mysql, mariadb"/>
-    <property name="datetimeType" value="datetime" dbms="oracle, mssql, postgresql, h2"/>
+    <property name="floatType" value="float4" dbms="postgresql"/>
+    <property name="clobType" value="longvarchar" dbms="postgresql"/>
+    <property name="blobType" value="bytea" dbms="postgresql"/>
+    <property name="uuidType" value="uuid" dbms="postgresql"/>
+    <property name="datetimeType" value="datetime" dbms="postgresql"/>
 
     <include file="config/liquibase/changelog/00000000000000_initial_schema.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20220613180728_added_entity_Abc.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20220613180828_added_entity_Xyz.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20220613183728_added_entity_Abc0.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20220613183729_added_entity_Abc1.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20220613183730_added_entity_Abc2.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20220613183731_added_entity_Abc3.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20220613183732_added_entity_Abc4.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20220613183733_added_entity_Abc5.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20220613183734_added_entity_Abc6.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20220613183735_added_entity_Abc7.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20220613183736_added_entity_Abc8.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20220613183737_added_entity_Abc9.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20220613183738_added_entity_Abc10.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20220613183739_added_entity_Abc11.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20220613183740_added_entity_Abc12.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20220613183741_added_entity_Abc13.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20220613183742_added_entity_Abc14.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20220613183743_added_entity_Abc15.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20220613183744_added_entity_Abc16.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20220613183745_added_entity_Abc17.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20220613183746_added_entity_Abc18.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20220613183747_added_entity_Abc19.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20220613183748_added_entity_Abc20.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20220613183749_added_entity_Abc21.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20220613183750_added_entity_Abc22.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20220613183751_added_entity_Abc23.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20220613183752_added_entity_Abc24.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20220613183753_added_entity_Abc25.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20220613183754_added_entity_Abc26.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20220613183755_added_entity_Abc27.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20220613183756_added_entity_Abc28.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20220613183757_added_entity_Abc29.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20230719120326_added_entity_Abc0.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
     <!-- jhipster-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->

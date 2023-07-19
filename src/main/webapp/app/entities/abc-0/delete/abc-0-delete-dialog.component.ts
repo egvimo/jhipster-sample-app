@@ -3,6 +3,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { IAbc0 } from '../abc-0.model';
 import { Abc0Service } from '../service/abc-0.service';
+import { ITEM_DELETED_EVENT } from 'app/config/navigation.constants';
 
 @Component({
   templateUrl: './abc-0-delete-dialog.component.html',
@@ -18,7 +19,7 @@ export class Abc0DeleteDialogComponent {
 
   confirmDelete(id: number): void {
     this.abc0Service.delete(id).subscribe(() => {
-      this.activeModal.close('deleted');
+      this.activeModal.close(ITEM_DELETED_EVENT);
     });
   }
 }

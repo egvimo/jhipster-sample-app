@@ -5,7 +5,7 @@ import org.springframework.stereotype.Repository;
 import sample.domain.Abc0;
 
 /**
- * Spring Data SQL repository for the Abc0 entity.
+ * Spring Data JPA repository for the Abc0 entity.
  */
 @SuppressWarnings("unused")
 @Repository

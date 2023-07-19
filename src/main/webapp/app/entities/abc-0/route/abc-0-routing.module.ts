@@ -6,11 +6,15 @@ import { Abc0Component } from '../list/abc-0.component';
 import { Abc0DetailComponent } from '../detail/abc-0-detail.component';
 import { Abc0UpdateComponent } from '../update/abc-0-update.component';
 import { Abc0RoutingResolveService } from './abc-0-routing-resolve.service';
+import { ASC } from 'app/config/navigation.constants';
 
 const abc0Route: Routes = [
   {
     path: '',
     component: Abc0Component,
+    data: {
+      defaultSort: 'id,' + ASC,
+    },
     canActivate: [UserRouteAccessService],
   },
   {

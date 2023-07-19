@@ -16,7 +16,7 @@ public class KafkaTestContainer implements InitializingBean, DisposableBean {
     @Override
     public void destroy() {
         if (null != kafkaContainer && kafkaContainer.isRunning()) {
-            kafkaContainer.stop();
+            kafkaContainer.close();
         }
     }
 
@@ -24,7 +24,7 @@ public class KafkaTestContainer implements InitializingBean, DisposableBean {
     public void afterPropertiesSet() {
         if (null == kafkaContainer) {
             kafkaContainer =
-                new KafkaContainer(DockerImageName.parse("confluentinc/cp-kafka:5.5.7"))
+                new KafkaContainer(DockerImageName.parse("confluentinc/cp-kafka:7.2.1"))
                     .withLogConsumer(new Slf4jLogConsumer(log))
                     .withReuse(true);
         }

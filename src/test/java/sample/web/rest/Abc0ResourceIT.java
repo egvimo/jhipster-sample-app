@@ -179,7 +179,7 @@ class Abc0ResourceIT {
 
     @Test
     @Transactional
-    void putNewAbc0() throws Exception {
+    void putExistingAbc0() throws Exception {
         // Initialize the database
         abc0Repository.saveAndFlush(abc0);
 

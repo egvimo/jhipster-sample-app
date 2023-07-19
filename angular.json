@@ -98,7 +98,6 @@
       }
     }
   },
-  "defaultProject": "sample",
   "cli": {
     "cache": {
       "enabled": true,

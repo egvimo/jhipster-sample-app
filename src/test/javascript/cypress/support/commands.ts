@@ -45,7 +45,7 @@ export const classInvalid = 'ng-invalid';
 
 export const classValid = 'ng-valid';
 
-Cypress.Commands.add('authenticatedRequest', (data: any) => {
+Cypress.Commands.add('authenticatedRequest', data => {
   return cy.getCookie('XSRF-TOKEN').then(csrfCookie => {
     return cy.request({
       ...data,
@@ -77,7 +77,8 @@ Cypress.Commands.add('login', (username: string, password: string) => {
 declare global {
   namespace Cypress {
     interface Chainable {
-      authenticatedRequest(data: any): Cypress.Chainable;
+      authenticatedRequest(data): Cypress.Chainable;
+      login(username: string, password: string): Cypress.Chainable;
     }
   }
 }

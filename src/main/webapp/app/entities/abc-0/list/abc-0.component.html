@@ -3,9 +3,9 @@
     <span jhiTranslate="sampleApp.abc0.home.title">Abc 0 S</span>
 
     <div class="d-flex justify-content-end">
-      <button class="btn btn-info me-2" (click)="loadAll()" [disabled]="isLoading">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
         <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
-        <span jhiTranslate="sampleApp.abc0.home.refreshListLabel">Refresh List</span>
+        <span jhiTranslate="sampleApp.abc0.home.refreshListLabel">Liste aktualisieren</span>
       </button>
 
       <button
@@ -15,7 +15,7 @@
         [routerLink]="['/abc-0/new']"
       >
         <fa-icon icon="plus"></fa-icon>
-        <span jhiTranslate="sampleApp.abc0.home.createLabel"> Create a new Abc 0 </span>
+        <span jhiTranslate="sampleApp.abc0.home.createLabel"> Abc 0 erstellen </span>
       </button>
     </div>
   </h2>
@@ -25,16 +25,31 @@
   <jhi-alert></jhi-alert>
 
   <div class="alert alert-warning" id="no-result" *ngIf="abc0s?.length === 0">
-    <span jhiTranslate="sampleApp.abc0.home.notFound">No abc0s found</span>
+    <span jhiTranslate="sampleApp.abc0.home.notFound">Keine Abc 0 S gefunden</span>
   </div>
 
-  <div class="table-responsive" id="entities" *ngIf="abc0s && abc0s.length > 0">
+  <div class="table-responsive table-entities" id="entities" *ngIf="abc0s && abc0s.length > 0">
     <table class="table table-striped" aria-describedby="page-heading">
       <thead>
-        <tr>
-          <th scope="col"><span jhiTranslate="global.field.id">ID</span></th>
-          <th scope="col"><span jhiTranslate="sampleApp.abc0.name">Name</span></th>
-          <th scope="col"><span jhiTranslate="sampleApp.abc0.otherField">Other Field</span></th>
+        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
+          <th scope="col" jhiSortBy="id">
+            <div class="d-flex">
+              <span jhiTranslate="global.field.id">ID</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="name">
+            <div class="d-flex">
+              <span jhiTranslate="sampleApp.abc0.name">Name</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="otherField">
+            <div class="d-flex">
+              <span jhiTranslate="sampleApp.abc0.otherField">Other Field</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
           <th scope="col"></th>
         </tr>
       </thead>
@@ -49,17 +64,17 @@
             <div class="btn-group">
               <button type="submit" [routerLink]="['/abc-0', abc0.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
                 <fa-icon icon="eye"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">Details</span>
               </button>
 
               <button type="submit" [routerLink]="['/abc-0', abc0.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
                 <fa-icon icon="pencil-alt"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Bearbeiten</span>
               </button>
 
               <button type="submit" (click)="delete(abc0)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
                 <fa-icon icon="times"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Löschen</span>
               </button>
             </div>
           </td>

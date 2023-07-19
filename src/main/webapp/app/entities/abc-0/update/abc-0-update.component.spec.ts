@@ -6,8 +6,9 @@ import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { of, Subject, from } from 'rxjs';
 
+import { Abc0FormService } from './abc-0-form.service';
 import { Abc0Service } from '../service/abc-0.service';
-import { IAbc0, Abc0 } from '../abc-0.model';
+import { IAbc0 } from '../abc-0.model';
 
 import { Abc0UpdateComponent } from './abc-0-update.component';
 
@@ -15,6 +16,7 @@ describe('Abc0 Management Update Component', () => {
   let comp: Abc0UpdateComponent;
   let fixture: ComponentFixture<Abc0UpdateComponent>;
   let activatedRoute: ActivatedRoute;
+  let abc0FormService: Abc0FormService;
   let abc0Service: Abc0Service;
 
   beforeEach(() => {
@@ -36,6 +38,7 @@ describe('Abc0 Management Update Component', () => {
 
     fixture = TestBed.createComponent(Abc0UpdateComponent);
     activatedRoute = TestBed.inject(ActivatedRoute);
+    abc0FormService = TestBed.inject(Abc0FormService);
     abc0Service = TestBed.inject(Abc0Service);
 
     comp = fixture.componentInstance;
@@ -48,15 +51,16 @@ describe('Abc0 Management Update Component', () => {
       activatedRoute.data = of({ abc0 });
       comp.ngOnInit();
 
-      expect(comp.editForm.value).toEqual(expect.objectContaining(abc0));
+      expect(comp.abc0).toEqual(abc0);
     });
   });
 
   describe('save', () => {
     it('Should call update service on save for existing entity', () => {
       // GIVEN
-      const saveSubject = new Subject<HttpResponse<Abc0>>();
+      const saveSubject = new Subject<HttpResponse<IAbc0>>();
       const abc0 = { id: 123 };
+      jest.spyOn(abc0FormService, 'getAbc0').mockReturnValue(abc0);
       jest.spyOn(abc0Service, 'update').mockReturnValue(saveSubject);
       jest.spyOn(comp, 'previousState');
       activatedRoute.data = of({ abc0 });
@@ -69,18 +73,20 @@ describe('Abc0 Management Update Component', () => {
       saveSubject.complete();
 
       // THEN
+      expect(abc0FormService.getAbc0).toHaveBeenCalled();
       expect(comp.previousState).toHaveBeenCalled();
-      expect(abc0Service.update).toHaveBeenCalledWith(abc0);
+      expect(abc0Service.update).toHaveBeenCalledWith(expect.objectContaining(abc0));
       expect(comp.isSaving).toEqual(false);
     });
 
     it('Should call create service on save for new entity', () => {
       // GIVEN
-      const saveSubject = new Subject<HttpResponse<Abc0>>();
-      const abc0 = new Abc0();
+      const saveSubject = new Subject<HttpResponse<IAbc0>>();
+      const abc0 = { id: 123 };
+      jest.spyOn(abc0FormService, 'getAbc0').mockReturnValue({ id: null });
       jest.spyOn(abc0Service, 'create').mockReturnValue(saveSubject);
       jest.spyOn(comp, 'previousState');
-      activatedRoute.data = of({ abc0 });
+      activatedRoute.data = of({ abc0: null });
       comp.ngOnInit();
 
       // WHEN
@@ -90,14 +96,15 @@ describe('Abc0 Management Update Component', () => {
       saveSubject.complete();
 
       // THEN
-      expect(abc0Service.create).toHaveBeenCalledWith(abc0);
+      expect(abc0FormService.getAbc0).toHaveBeenCalled();
+      expect(abc0Service.create).toHaveBeenCalled();
       expect(comp.isSaving).toEqual(false);
       expect(comp.previousState).toHaveBeenCalled();
     });
 
     it('Should set isSaving to false on error', () => {
       // GIVEN
-      const saveSubject = new Subject<HttpResponse<Abc0>>();
+      const saveSubject = new Subject<HttpResponse<IAbc0>>();
       const abc0 = { id: 123 };
       jest.spyOn(abc0Service, 'update').mockReturnValue(saveSubject);
       jest.spyOn(comp, 'previousState');
@@ -110,7 +117,7 @@ describe('Abc0 Management Update Component', () => {
       saveSubject.error('This is an error!');
 
       // THEN
-      expect(abc0Service.update).toHaveBeenCalledWith(abc0);
+      expect(abc0Service.update).toHaveBeenCalled();
       expect(comp.isSaving).toEqual(false);
       expect(comp.previousState).not.toHaveBeenCalled();
     });

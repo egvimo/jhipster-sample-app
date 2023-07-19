@@ -9,6 +9,5 @@ import { Abc0RoutingModule } from './route/abc-0-routing.module';
 @NgModule({
   imports: [SharedModule, Abc0RoutingModule],
   declarations: [Abc0Component, Abc0DetailComponent, Abc0UpdateComponent, Abc0DeleteDialogComponent],
-  entryComponents: [Abc0DeleteDialogComponent],
 })
 export class Abc0Module {}

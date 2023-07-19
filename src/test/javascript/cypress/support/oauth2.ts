@@ -13,7 +13,7 @@ Cypress.Commands.add('getOauth2Data', () => {
   });
 });
 
-Cypress.Commands.add('oauthLogin', (oauth2Data: any, username: string, password: string) => {
+Cypress.Commands.add('oauthLogin', (oauth2Data, username: string, password: string) => {
   const url = new URL(oauth2Data.url);
   if (url.origin.includes('okta')) {
     cy.oktaLogin(oauth2Data, username, password);
@@ -24,7 +24,7 @@ Cypress.Commands.add('oauthLogin', (oauth2Data: any, username: string, password:
   }
 });
 
-Cypress.Commands.add('keycloakLogin', (oauth2Data: any, username: string, password: string) => {
+Cypress.Commands.add('keycloakLogin', (oauth2Data, username: string, password: string) => {
   cy.request({
     url: `${oauth2Data.url}`,
     followRedirect: false,
@@ -56,7 +56,7 @@ Cypress.Commands.add('keycloakLogin', (oauth2Data: any, username: string, passwo
     });
 });
 
-Cypress.Commands.add('auth0Login', (oauth2Data: any, username: string, password: string) => {
+Cypress.Commands.add('auth0Login', (oauth2Data, username: string, password: string) => {
   cy.request({
     url: `${oauth2Data.url}`,
     followRedirect: true,
@@ -88,7 +88,7 @@ Cypress.Commands.add('auth0Login', (oauth2Data: any, username: string, password:
     });
 });
 
-Cypress.Commands.add('oktaLogin', (oauth2Data: any, username, password) => {
+Cypress.Commands.add('oktaLogin', (oauth2Data, username, password) => {
   const url = new URL(oauth2Data.url);
   cy.request({
     method: 'POST',
@@ -142,10 +142,10 @@ declare global {
   namespace Cypress {
     interface Chainable<Subject> {
       getOauth2Data(): Cypress.Chainable;
-      oauthLogin(oauth2Data: any, username: string, password: string): Cypress.Chainable;
-      keycloakLogin(oauth2Data: any, username: string, password: string): Cypress.Chainable;
-      auth0Login(oauth2Data: any, username: string, password: string): Cypress.Chainable;
-      oktaLogin(oauth2Data: any, username: string, password: string): Cypress.Chainable;
+      oauthLogin(oauth2Data, username: string, password: string): Cypress.Chainable;
+      keycloakLogin(oauth2Data, username: string, password: string): Cypress.Chainable;
+      auth0Login(oauth2Data, username: string, password: string): Cypress.Chainable;
+      oktaLogin(oauth2Data, username: string, password: string): Cypress.Chainable;
       oauthLogout(): Cypress.Chainable;
     }
   }
